@@ -1,0 +1,7 @@
+<assets>
+    <texture name="cursor" path="../assets/img/cursor.png"/>
+    <texture name="main_menu_background" path="../assets/img/bg_menu.png"/>
+    <texture name="background_level_1" path="../assets/img/bg_game1.png"/>
+    <texture name="enemy1" path="../assets/img/enemy1.png"/>
+    <animation name="enemy1" texture_name="enemy1" frames_in_row="5" frame_width="35" frame_height="48" nframes="5"/>
+</assets>

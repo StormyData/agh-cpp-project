@@ -2,10 +2,10 @@
 // Created by tobiasz on 09.05.2022.
 //
 
-#include "main_menu.h"
+#include "MainMenuScreen.h"
 #include <SFML/Graphics.hpp>
 #include "Button.h"
-#include "AssetLoader.h"
+#include "../system/AssetLoader.h"
 
 void MainMenuScreen::run() {
 
@@ -20,8 +20,12 @@ void MainMenuScreen::run() {
     Button start_button(start_button_properties, assetLoader);
     bool redraw_required = true;
 
+    Animation enemy1(assetLoader.get_animation("enemy1"));
+
+    sf::Clock clock1;
     while (_window.isOpen())
     {
+        clock1.restart();
         sf::Event event{};
         while (_window.pollEvent(event))
         {
@@ -45,12 +49,17 @@ void MainMenuScreen::run() {
             goto_game = false;
         }
 
-        if(!redraw_required)
-            continue;
+//if(!redraw_required)
+  //          continue;
+        enemy1.update(1);
+
         _window.clear();
         _window.draw(background_sprite);
         _window.draw(start_button);
+        _window.draw(enemy1);
         _window.display();
+        while(clock1.getElapsedTime().asMilliseconds() < 1000 / 60);
         redraw_required = false;
+
     }
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "common.h"
-#include "AssetLoader.h"
+#include "../system/common.h"
+#include "../system/AssetLoader.h"
 
 struct ButtonProperties{
     Alignment h_align;

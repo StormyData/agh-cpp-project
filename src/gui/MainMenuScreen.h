@@ -5,7 +5,7 @@ class MainMenuScreen
 {
     sf::RenderWindow& _window;
 public:
-    MainMenuScreen(sf::RenderWindow& window) : _window(window)
+    explicit MainMenuScreen(sf::RenderWindow& window) : _window(window)
     {
 
     }
