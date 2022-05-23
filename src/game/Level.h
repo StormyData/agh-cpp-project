@@ -4,18 +4,26 @@
 #include <list>
 #include "../system/AssetLoader.h"
 #include "GameData.h"
+#include "Projectile.h"
+#include "../system/context.h"
 class Ship;
 
-class Level : public sf::Drawable{
+class Level{
 public:
-    explicit Level(const LevelData& data, const AssetLoader& assetLoader)
+    Level(const LevelData& data,Context& context) : context(context)
     {
 
     }
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+    virtual std::optional<int> run(int initial_player_health);
 private:
+    const LevelData data;
     sf::Sprite background;
     std::list<Ship*> ships;
-
+    std::list<Projectile*> projectiles;
+    Context& context;
 };
 
+//class Boss_level : public Level
+//{
+//
+//};

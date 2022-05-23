@@ -1,18 +1,39 @@
 #include "AssetLoader.h"
 #include <fstream>
 #include <tinyxml2.h>
-const tinyxml2::XMLAttribute* getAttrOrThrow(tinyxml2::XMLElement* element, const char* name)
+const tinyxml2::XMLAttribute* get_attribute_or_throw(tinyxml2::XMLElement* element, const char* name, const std::string& where="")
 {
     const tinyxml2::XMLAttribute* attr = element->FindAttribute(name);
     if(attr == nullptr)
-        throw std::invalid_argument("element does not have required attribute");
+        throw std::invalid_argument(where+"{"+name+"} does not exist\n");
     return attr;
+}
+Side parse_side(const std::string& s, const std::string& where = "")
+{
+    if(s == "enemy")
+        return ENEMY;
+    else if(s == "player")
+        return PLAYER;
+    throw std::invalid_argument(s +" in " + where + "is not a valid side");
+}
+sf::Vector2f parse_point(const std::string& s, const std::string& where = "")
+{
+    size_t off = s.find(',');
+    if(off == std::string::npos)
+    {
+        throw std::invalid_argument("invalid point literal" + s +" in " + where);
+    }
+    float x = std::strtof(s.substr(0, off).c_str(), nullptr);
+    float y = std::strtof(s.substr(off, s.size() - off - 1).c_str(), nullptr);
+    return {x,y};
 }
 
 
-void AssetLoader::load_texture(tinyxml2::XMLElement *element) {
-    std::string texture_name = getAttrOrThrow(element,"name")->Value();
-    std::string texture_path = getAttrOrThrow(element, "path")->Value();
+void AssetLoader::load_texture(tinyxml2::XMLElement *element, std::string where) {
+    where+="::texture";
+    std::string texture_name = get_attribute_or_throw(element, "name", where)->Value();
+    where+="("+texture_name+")";
+    std::string texture_path = get_attribute_or_throw(element, "path", where)->Value();
     if(!textures.contains(texture_name))
     {
         textures[texture_name] = new sf::Texture;
@@ -20,17 +41,19 @@ void AssetLoader::load_texture(tinyxml2::XMLElement *element) {
     textures[texture_name]->loadFromFile(texture_path);
 }
 
-void AssetLoader::load_anim(tinyxml2::XMLElement *element) {
-    std::string anim_name = getAttrOrThrow(element,"name")->Value();
-    std::string texture_name = getAttrOrThrow(element,"texture_name")->Value();
+void AssetLoader::load_anim(tinyxml2::XMLElement *element, std::string where) {
+    where+="::animation";
+    std::string anim_name = get_attribute_or_throw(element, "name", where)->Value();
+    where+="("+anim_name+")";
+    std::string texture_name = get_attribute_or_throw(element, "texture_name", where)->Value();
 
     AnimationData data;
     data.texture = &get_texture(texture_name);
-    data.frames_in_row = getAttrOrThrow(element, "frames_in_row")->IntValue();
-    data.frame_size.x = getAttrOrThrow(element, "frame_width")->IntValue();
-    data.frame_size.y = getAttrOrThrow(element, "frame_height")->IntValue();
-    int nframes = getAttrOrThrow(element,"nframes")->IntValue();
-    data.times = std::vector<float>(nframes, 1.0);
+    data.frames_in_row = get_attribute_or_throw(element, "frames_in_row", where)->IntValue();
+    data.frame_size.x = get_attribute_or_throw(element, "frame_width", where)->IntValue();
+    data.frame_size.y = get_attribute_or_throw(element, "frame_height", where)->IntValue();
+    int nframes = get_attribute_or_throw(element, "nframes", where)->IntValue();
+    data.times = std::vector<float>(nframes, 1.0 / 30);
     animations[anim_name] = data;
 }
 
@@ -45,11 +68,67 @@ void AssetLoader::load_file(const std::string& path) {
     {
         std::string name = element->Name();
         if(name == "texture")
-            load_texture(element);
+            load_texture(element, "assets");
         else if(name == "animation")
-            load_anim(element);
+            load_anim(element, "assets");
+        else if(name == "projectile")
+            load_projectile(element, "assets");
+        else if(name == "colision")
+            load_colision(element, "assets");
+        else if(name == "ship_type")
+            load_ship_type(element, "assets");
         element = element->NextSiblingElement();
     }
 
+}
+
+void AssetLoader::load_projectile(tinyxml2::XMLElement *element, std::string where) {
+    where+="::projectile";
+    std::string name = get_attribute_or_throw(element, "name", where)->Value();
+    where+="(" + name + ")";
+    std::string texture_name = get_attribute_or_throw(element, "texture", where)->Value();
+    std::string colision_name = get_attribute_or_throw(element, "colision", where)->Value();
+    Side side = parse_side(get_attribute_or_throw(element, "side", where)->Value(), where+"{side}");
+    sf::Vector2f speed = parse_point(get_attribute_or_throw(element,"speed",where)->Value(),where+"{speed}");
+    projectile_types[name] = ProjectileData();
+    projectile_types[name].side = side;
+    projectile_types[name].colision = get_colision(colision_name);
+    projectile_types[name].texture = &get_texture(texture_name);
+    projectile_types[name].speed = speed;
+}
+
+void AssetLoader::load_ship_type(tinyxml2::XMLElement *element, std::string where) {
+    where+="::ship_type";
+    std::string name = get_attribute_or_throw(element, "name", where)->Value();
+    where+="(" + name + ")";
+    std::string animation_name = get_attribute_or_throw(element, "animation", where)->Value();
+    std::string colision_name = get_attribute_or_throw(element, "colision", where)->Value();
+    ship_types[name] = ShipType();
+    ship_types[name].colision = get_colision(colision_name);
+    ship_types[name].animation = get_animation(animation_name);
+}
+
+void AssetLoader::load_colision(tinyxml2::XMLElement *element, std::string where) {
+    where+="::colision";
+    std::string name = get_attribute_or_throw(element, "name", where)->Value();
+    where+="(" + name + ")";
+    colisions[name] = ColisionData();
+    std::vector<sf::Vector2f>& data = colisions[name].points;
+    tinyxml2::XMLElement* child = element->FirstChildElement();
+    int i = 0;
+    while (child != nullptr)
+    {
+        if(child->Name() == std::string("p")) {
+            std::string p_where = where + ":[" + std::to_string(i) + "]:p";
+            std::string p_str = get_attribute_or_throw(child,"pos",p_where)->Value();
+            data.push_back(parse_point(p_str,p_where));
+        }
+        i++;
+        child = child->NextSiblingElement();
+    }
+}
+
+const std::vector<LevelData> &AssetLoader::get_levels() {
+    return levels;
 }
 

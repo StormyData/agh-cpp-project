@@ -1,14 +1,12 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "../system/context.h"
 
 class MainMenuScreen
 {
-    sf::RenderWindow& _window;
+    Context& context;
 public:
-    explicit MainMenuScreen(sf::RenderWindow& window) : _window(window)
-    {
-
-    }
+    explicit MainMenuScreen(Context& context) : context(context) {}
     void run();
 
 };

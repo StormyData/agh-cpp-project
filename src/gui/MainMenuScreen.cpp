@@ -4,34 +4,34 @@
 
 #include "MainMenuScreen.h"
 #include <SFML/Graphics.hpp>
-#include "Button.h"
 #include "../system/AssetLoader.h"
+#include "Button.h"
 
 void MainMenuScreen::run() {
 
-    AssetLoader assetLoader;
-    sf::Sprite background_sprite(assetLoader.get_texture("main_menu_background"));
+    sf::Sprite background_sprite(context.assetLoader.get_texture("main_menu_background"));
     bool goto_game = false;
     ButtonProperties start_button_properties;
     start_button_properties.text = "start game";
     start_button_properties.where = sf::FloatRect(0, 0, 800, 600);
     start_button_properties.v_align = start_button_properties.h_align = Alignment::CENTER;
     start_button_properties.onClick = [&goto_game](){ goto_game = true;};
-    Button start_button(start_button_properties, assetLoader);
+    Button start_button(start_button_properties, context.assetLoader);
     bool redraw_required = true;
 
-    Animation enemy1(assetLoader.get_animation("enemy1"));
+    Animation enemy1(context.assetLoader.get_animation("enemy_1"));
 
     sf::Clock clock1;
-    while (_window.isOpen())
+    while (context.window.isOpen())
     {
+        float elapsed = (float)clock1.getElapsedTime().asMicroseconds() / 1000000.0f;
         clock1.restart();
         sf::Event event{};
-        while (_window.pollEvent(event))
+        while (context.window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
             {
-                _window.close();
+                context.window.close();
             }
             else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
             {
@@ -39,27 +39,25 @@ void MainMenuScreen::run() {
             }
             else if (event.type == sf::Event::MouseMoved)
             {
-                redraw_required |= start_button.test_mouseover(sf::Vector2f(sf::Mouse::getPosition(_window)));
+                redraw_required |= start_button.test_mouseover(sf::Vector2f(sf::Mouse::getPosition(context.window)));
             }
         }
-
         if(goto_game)
         {
             std::cout<< "gone to game, and returned from game\n";
             goto_game = false;
         }
+        redraw_required |= enemy1.update(elapsed);
 
-//if(!redraw_required)
-  //          continue;
-        enemy1.update(1);
-
-        _window.clear();
-        _window.draw(background_sprite);
-        _window.draw(start_button);
-        _window.draw(enemy1);
-        _window.display();
-        while(clock1.getElapsedTime().asMilliseconds() < 1000 / 60);
+        if(!redraw_required)
+            continue;
+        context.window.clear();
+        context.window.draw(background_sprite);
+        context.window.draw(start_button);
+        context.window.draw(enemy1);
+        context.window.display();
         redraw_required = false;
+//        while (clock1.getElapsedTime().asMilliseconds() < 1000/60);
 
     }
 }

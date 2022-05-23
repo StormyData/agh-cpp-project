@@ -3,16 +3,16 @@
 #include <vector>
 #include "Level.h"
 #include "GameData.h"
-
+#include "../system/context.h"
 enum GameResult{WON, FAILED, EXITED};
 
 class Game: public sf::Drawable
 {
 public:
-    Game(std::vector<LevelData> level_data, const AssetLoader& assetLoader): levels(std::move(level_data)), assetLoader(assetLoader){};
+    Game(Context& context): context(context) {};
     GameResult run_game();
     GameResult run_level(int level_no);
 private:
-    std::vector<LevelData> levels;
-    const AssetLoader& assetLoader;
+    Context& context;
+    int player_health;
 };

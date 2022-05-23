@@ -6,7 +6,7 @@
 #include "Animation.h"
 
 
-void Animation::update(float dt) {
+bool Animation::update(float dt) {
     time+=dt;
     int last_index = index;
     while(data.times[index] <= time)
@@ -22,8 +22,9 @@ void Animation::update(float dt) {
         int x = index % data.frames_in_row;
         sf::Vector2i pos(x * data.frame_size.x, y * data.frame_size.y);
         sprite.setTextureRect(sf::IntRect(pos, data.frame_size));
-        std::cout<< "changed texture rect to pos x=" << x << ",y=" << y <<"\n";
+        return true;
     }
+    return false;
 }
 
 Animation::Animation(const AnimationData &data, float initial_time)

@@ -3,15 +3,23 @@
 #include <iostream>
 #include "../gui/Animation.h"
 #include <tinyxml2.h>
+#include "../game/GameData.h"
 class AssetLoader
 {
 
     std::unordered_map<std::string, sf::Texture*> textures;
     std::unordered_map<std::string, AnimationData> animations;
+    std::unordered_map<std::string, ColisionData> colisions;
+    std::unordered_map<std::string, ProjectileData> projectile_types;
+    std::unordered_map<std::string, ShipType> ship_types;
+    std::vector<LevelData> levels;
     sf::Font font;
 
-    void load_texture(tinyxml2::XMLElement *element);
-    void load_anim(tinyxml2::XMLElement *element);
+    void load_texture(tinyxml2::XMLElement *element, std::string where);
+    void load_anim(tinyxml2::XMLElement *element, std::string where);
+    void load_projectile(tinyxml2::XMLElement *element, std::string where);
+    void load_colision(tinyxml2::XMLElement* element, std::string where);
+    void load_ship_type(tinyxml2::XMLElement* element, std::string where);
     void load_file(const std::string& path);
 public:
     const sf::Texture& get_texture(const std::string& name) const
@@ -23,6 +31,19 @@ public:
     const sf::Font& get_font() const
     {
         return font;
+    }
+    ColisionData get_colision(const std::string& name) const
+    {
+        if(!colisions.contains(name))
+            throw std::invalid_argument("unknown colision name: " + name);
+        return colisions.at(name);
+    }
+    ProjectileData get_projectile_data(const std::string& name) const
+    {
+        if(!projectile_types.contains(name))
+            throw std::invalid_argument("unknown projectile data name: " + name);
+        return projectile_types.at(name);
+
     }
     AssetLoader()
     {
@@ -44,4 +65,6 @@ public:
             throw std::invalid_argument("unknown animation name: " + name);
         return animations.at(name);
     }
+
+    const std::vector<LevelData> &get_levels();
 };
