@@ -7,7 +7,8 @@
 
 class Screen {
 public:
-    explicit Screen(Context& context): context(context) {};
+    explicit Screen(Context &context, bool wait) :
+    context(context), wait(wait) {};
     virtual Screen* run();
 protected:
     Context& context;
@@ -19,7 +20,7 @@ protected:
 private:
     Screen* retval = nullptr;
     bool should_return = false;
-
+    bool wait;
 };
 
 

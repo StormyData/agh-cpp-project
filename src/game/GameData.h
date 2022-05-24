@@ -29,6 +29,15 @@ struct ShipType
     AnimationData animation;
 };
 
+struct displayText
+{
+    std::string text;
+    unsigned int size;
+    unsigned int style;
+    sf::Color fill = sf::Color::White;
+    sf::Color outline = sf::Color::Transparent;
+    float thickness = 0;
+};
 
 struct ShipData {
     ShipType type;

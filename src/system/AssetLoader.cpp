@@ -77,6 +77,8 @@ void AssetLoader::load_file(const std::string& path) {
             load_colision(element, "assets");
         else if(name == "ship_type")
             load_ship_type(element, "assets");
+        else if(name == "text")
+            load_string(element, "assets");
         element = element->NextSiblingElement();
     }
 
@@ -130,5 +132,20 @@ void AssetLoader::load_colision(tinyxml2::XMLElement *element, std::string where
 
 const std::vector<LevelData> &AssetLoader::get_levels() {
     return levels;
+}
+
+void AssetLoader::load_string(tinyxml2::XMLElement *element, std::string where) {
+    where+="::text";
+    std::string name = get_attribute_or_throw(element, "name", where)->Value();
+    unsigned int size = get_attribute_or_throw(element, "size", where)->UnsignedValue();
+    unsigned int style = 0;
+    if(element->QueryAttribute("style", &style) == tinyxml2::XML_NO_ATTRIBUTE)
+        style = 0;
+    where+="(" + name + ")";
+    strings[name] = displayText();
+    strings[name].text = element->GetText();
+    strings[name].size = size;
+    strings[name].style = style;
+
 }
 

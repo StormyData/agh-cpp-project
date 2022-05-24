@@ -22,3 +22,7 @@ Ship::Ship(const ShipData &shipData, const AssetLoader &assetLoader): Collidable
 void Ship::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     target.draw(animation, states);
 }
+
+void Ship::update(float dt) {
+
+}

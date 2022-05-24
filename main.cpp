@@ -5,7 +5,7 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(800, 600), "OUT OF SPACE");
     Context context{window};
     Screen* screen = new MainMenuScreen(context);
     while (screen != nullptr)

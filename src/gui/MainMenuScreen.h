@@ -12,8 +12,8 @@ public:
     bool update_logic(float) override;
     void draw() override;
 private:
-    Button start_button;
-    bool goto_game = false;
+    Button credits_button;
+    bool goto_credits = false;
     Animation enemy1;
     sf::Sprite background_sprite;
 };

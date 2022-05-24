@@ -20,7 +20,7 @@ public:
     Ship(const ShipData& shipData, const AssetLoader& assetLoader);
     bool get_hit_by(const Projectile& projectile);
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-    void update(float dt);
+    virtual void update(float dt);
 };
 
 class PlayerShip : public Ship

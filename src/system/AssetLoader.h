@@ -14,6 +14,7 @@ class AssetLoader
     std::unordered_map<std::string, ProjectileData> projectile_types{};
     std::unordered_map<std::string, ShipType> ship_types{};
     std::vector<LevelData> levels;
+    std::unordered_map<std::string, displayText> strings;
     sf::Font font;
 
     void load_texture(tinyxml2::XMLElement *element, std::string where);
@@ -21,6 +22,7 @@ class AssetLoader
     void load_projectile(tinyxml2::XMLElement *element, std::string where);
     void load_colision(tinyxml2::XMLElement* element, std::string where);
     void load_ship_type(tinyxml2::XMLElement* element, std::string where);
+    void load_string(tinyxml2::XMLElement* element, std::string where);
     void load_file(const std::string& path);
 public:
     const sf::Texture& get_texture(const std::string& name) const
@@ -42,9 +44,14 @@ public:
     ProjectileData get_projectile_data(const std::string& name) const
     {
         if(!projectile_types.contains(name))
-            throw std::invalid_argument("unknown projectile animationData name: " + name);
+            throw std::invalid_argument("unknown projectile data name: " + name);
         return projectile_types.at(name);
-
+    }
+    displayText get_string(const std::string& name) const
+    {
+        if(!strings.contains(name))
+            throw std::invalid_argument("unknown string name: " + name);
+        return strings.at(name);
     }
     AssetLoader()
     {

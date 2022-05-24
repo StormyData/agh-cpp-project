@@ -126,5 +126,17 @@
         <p pos="0,46"/>
         <p pos="40,46"/>
     </colision>
-
+    <text name="credits" size="13">
+        Menu &amp; credits background by StumpyStrust opengameart.org
+        Ships and cursor design by Stephen Challener (Redshrike), hosted by OpenGameArt.org
+        Ship engines light and lasers by Rawdanitsu opengameart.org
+        Level backgrounds by Rawdanitsu opengameart.org
+        Explosions animations by Jetrel opengameart.org
+        Jump and portals animation by Soluna Software opengameart.org
+        Music by remaxim, yd, Joth, maxstack opengameart.org
+        Explosion sound effect by Lamoot from Blender Foundation opengameart.org
+        Laser sounds by dklon and bart opengameart.org
+        Jump sound by Ogrebane opengameart.org
+        Rest of graphics: Andrzej "Pojemnik" Gauza
+        Code: Tobiasz "StormyData" Szulc</text>
 </assets>
