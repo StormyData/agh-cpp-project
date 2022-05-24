@@ -14,7 +14,7 @@ std::optional<int> Level::run(int initial_player_health) {
     sf::Clock clock1;
     while (n_of_enemies > 0 && context.window.isOpen())
     {
-        float elapsed = (float)clock1.getElapsedTime().asMicroseconds() / 1000000.0f;
+        //float elapsed = (float)clock1.getElapsedTime().asMicroseconds() / 1000000.0f;
         clock1.restart();
         sf::Event event{};
         while (context.window.pollEvent(event))
@@ -43,4 +43,5 @@ std::optional<int> Level::run(int initial_player_health) {
         }
         context.window.display();
     }
+    return 0;
 }

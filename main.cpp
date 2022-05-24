@@ -7,7 +7,11 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
     Context context{window};
-    MainMenuScreen menuScreen(context);
-    menuScreen.run();
+    Screen* screen = new MainMenuScreen(context);
+    while (screen != nullptr)
+    {
+        screen = screen->run();
+    }
+    window.close();
     return 0;
 }

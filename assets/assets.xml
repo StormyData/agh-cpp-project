@@ -117,7 +117,7 @@
         <p pos="10,25"/>
         <p pos="10,7"/>
     </colision>
-    <projectile name="player_projectile" texture="player_projectile" colision="player_projectile" side="player"/>
+    <projectile name="player_projectile" texture="player_projectile" colision="player_projectile" side="player" speed="0,-8"/>
 
     <texture name="player" path="../assets/img/player_spritesheet.png"/>
     <animation name="player" texture_name="player" frame_height="52" frame_width="41" frames_in_row="5" nframes="5"/>

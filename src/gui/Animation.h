@@ -18,10 +18,10 @@ public:
     void setPosition(sf::Vector2f pos){sprite.setPosition(pos);}
     void setScale(sf::Vector2f scale){sprite.setScale(scale);}
 private:
-    const AnimationData data;
+    const AnimationData animationData;
     sf::Sprite sprite;
     float time = 0;
-    int index = 0;
+    size_t index = 0;
 };
 
 

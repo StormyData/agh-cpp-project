@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <functional>
 #include "../system/common.h"
 #include "../system/AssetLoader.h"
 
@@ -13,7 +14,7 @@ struct ButtonProperties{
 
 class Button: public sf::Drawable
 {
-    const float text_to_cursor_distance = 5;
+    float text_to_cursor_distance = 5;
     sf::Text display_text;
     sf::Sprite cursors[2];
     sf::FloatRect rect;
@@ -22,6 +23,7 @@ class Button: public sf::Drawable
     Alignment h_align;
     Alignment v_align;
 public:
+    Button()= default;;
     Button(const ButtonProperties& properties, const AssetLoader& assetLoader);
 
     bool test_mouseover(sf::Vector2f);

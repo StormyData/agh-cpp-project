@@ -8,8 +8,8 @@
 
 struct Projectile : public Collidable, public sf::Drawable{
     sf::Sprite sprite;
-    ProjectileData data;
     sf::Vector2f position;
+    ProjectileData data;
 public:
     explicit Projectile(const ProjectileData& projectileData, sf::Vector2f position);
     void update(float dt);

@@ -3,15 +3,16 @@
 #include <iostream>
 #include "../gui/Animation.h"
 #include <tinyxml2.h>
+#include <unordered_map>
 #include "../game/GameData.h"
 class AssetLoader
 {
 
-    std::unordered_map<std::string, sf::Texture*> textures;
-    std::unordered_map<std::string, AnimationData> animations;
-    std::unordered_map<std::string, ColisionData> colisions;
-    std::unordered_map<std::string, ProjectileData> projectile_types;
-    std::unordered_map<std::string, ShipType> ship_types;
+    std::unordered_map<std::string, sf::Texture*> textures{};
+    std::unordered_map<std::string, AnimationData> animations{};
+    std::unordered_map<std::string, ColisionData> colisions{};
+    std::unordered_map<std::string, ProjectileData> projectile_types{};
+    std::unordered_map<std::string, ShipType> ship_types{};
     std::vector<LevelData> levels;
     sf::Font font;
 
@@ -41,7 +42,7 @@ public:
     ProjectileData get_projectile_data(const std::string& name) const
     {
         if(!projectile_types.contains(name))
-            throw std::invalid_argument("unknown projectile data name: " + name);
+            throw std::invalid_argument("unknown projectile animationData name: " + name);
         return projectile_types.at(name);
 
     }
