@@ -50,4 +50,6 @@ struct ShipData {
 struct LevelData {
     std::string background;
     std::vector<ShipData> ships;
+    std::string display_name;
+    unsigned int next_level_no;
 };

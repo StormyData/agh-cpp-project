@@ -17,13 +17,23 @@ add_executable(project main.cpp
         src/system/AssetLoader.cpp
         src/system/AssetLoader.h
         src/system/common.cpp
-        src/game/Game.cpp
-        src/game/Game.h
         src/game/Level.cpp
         src/game/Level.h
         src/game/Ship.cpp
         src/game/Ship.h
         src/gui/Animation.cpp
-        src/gui/Animation.h src/game/GameData.h src/game/Projectile.cpp src/game/Projectile.h src/system/Collidable.cpp src/system/Collidable.h src/system/context.h src/system/SoundEngine.cpp src/system/SoundEngine.h src/gui/Screen.cpp src/gui/Screen.h src/gui/auxilary_screens.cpp src/gui/auxilary_screens.h)
+        src/gui/Animation.h
+        src/game/GameData.h
+        src/game/Projectile.cpp
+        src/game/Projectile.h
+        src/system/Collidable.cpp
+        src/system/Collidable.h
+        src/system/context.h
+        src/system/SoundEngine.cpp
+        src/system/SoundEngine.h
+        src/gui/Screen.cpp
+        src/gui/Screen.h
+        src/gui/auxilary_screens.cpp
+        src/gui/auxilary_screens.h)
 target_link_libraries(project sfml-graphics sfml-window sfml-system sfml-audio tinyxml2)
 target_compile_options(project PUBLIC -Wall -Werror)

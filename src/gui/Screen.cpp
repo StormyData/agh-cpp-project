@@ -5,6 +5,7 @@
 #include "Screen.h"
 
 Screen* Screen::run() {
+    on_enter();
     sf::Clock clock1;
     bool redraw_required = true;
     if(wait)
@@ -17,7 +18,7 @@ Screen* Screen::run() {
             while (context.window.waitEvent(event))
             {
                 if (event.type == sf::Event::Closed)
-                    on_exit();
+                    on_window_exit_pressed();
                 redraw_required |= process_additional_event(event);
             }
 
@@ -30,7 +31,9 @@ Screen* Screen::run() {
             context.window.display();
             redraw_required = false;
             if(should_return)
+            {
                 return retval;
+            }
         }
     }
     else
@@ -43,11 +46,15 @@ Screen* Screen::run() {
             while (context.window.pollEvent(event))
             {
                 if (event.type == sf::Event::Closed)
-                    on_exit();
+                    on_window_exit_pressed();
                 redraw_required |= process_additional_event(event);
             }
 
             redraw_required |= update_logic(elapsed);
+
+
+            if(should_return)
+                return retval;
 
             if(!redraw_required)
                 continue;
@@ -55,8 +62,6 @@ Screen* Screen::run() {
             draw();
             context.window.display();
             redraw_required = false;
-            if(should_return)
-                return retval;
         }
     }
 

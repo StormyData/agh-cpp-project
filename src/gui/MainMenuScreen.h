@@ -13,7 +13,10 @@ public:
     void draw() override;
 private:
     Button credits_button;
+    Button play_button;
     bool goto_credits = false;
+    bool goto_play = false;
     Animation enemy1;
     sf::Sprite background_sprite;
+    sf::Text title;
 };

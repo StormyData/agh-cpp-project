@@ -8,12 +8,13 @@
 class SoundEngine {
 public:
     explicit SoundEngine(AssetLoader& assetLoader): assetLoader(assetLoader) {};
-    void play_sound(const std::string& name);
-    void play_music(const std::string& name);
-    void update();
-    void reset();
+    void play_sound(const std::string& name){std::cout << "playing sound: " << name << std::endl;};
+    void play_music(const std::string& name) {std::cout << "playing music: " << name << std::endl;};
+    void update(){};
+    void reset(){};
 private:
     AssetLoader& assetLoader;
+    sf::Music music;
 };
 
 

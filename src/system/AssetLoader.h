@@ -5,6 +5,7 @@
 #include <tinyxml2.h>
 #include <unordered_map>
 #include "../game/GameData.h"
+#include <SFML/Audio.hpp>
 class AssetLoader
 {
 
