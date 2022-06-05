@@ -11,6 +11,8 @@ struct Context
 {
     sf::RenderWindow& window;
     AssetLoader assetLoader;
-    SoundEngine* soundEngine;
-
+    SoundEngine soundEngine;
+    explicit Context(sf::RenderWindow& window) : window(window),assetLoader(), soundEngine(assetLoader)
+    {
+    }
 };

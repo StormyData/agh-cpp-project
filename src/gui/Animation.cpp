@@ -33,3 +33,7 @@ Animation::Animation(const AnimationData &data, float initial_time)
     update(initial_time);
 }
 
+sf::Vector2f Animation::getSize() {
+    return {sprite.getGlobalBounds().width, sprite.getGlobalBounds().height};
+}
+

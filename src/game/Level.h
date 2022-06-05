@@ -18,6 +18,8 @@ public:
     bool update_logic(float) override;
 
     static Screen *get_level_screen(Context& context, unsigned int n);
+    void add_projectile(Projectile*);
+    ~Level();
 private:
     const LevelData data;
     sf::Sprite background;
@@ -25,6 +27,7 @@ private:
     std::list<Projectile*> projectiles;
     size_t n_of_enemies;
 
+    void on_defeat();
 };
 
 //class Boss_level : public Level

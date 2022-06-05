@@ -22,7 +22,8 @@
         <p pos="10,25"/>
         <p pos="10,7"/>
     </colision>
-    <projectile name="enemy_projectile_0" texture="enemy_projectile_0" colision="enemy_projectile_0" side="enemy" speed="0,7"/>
+    <projectile name="enemy_projectile_0" texture="enemy_projectile_0" colision="enemy_projectile_0" side="enemy"
+                speed="0,7"/>
     <texture name="enemy_projectile_1" path="../assets/img/enemy_proc2.png"/>
     <colision name="enemy_projectile_1">
         <p pos="4,8"/>
@@ -30,7 +31,8 @@
         <p pos="9,18"/>
         <p pos="4,18"/>
     </colision>
-    <projectile name="enemy_projectile_1" texture="enemy_projectile_1" colision="enemy_projectile_1" side="enemy" speed="0,9"/>
+    <projectile name="enemy_projectile_1" texture="enemy_projectile_1" colision="enemy_projectile_1" side="enemy"
+                speed="0,9"/>
     <texture name="enemy_projectile_2" path="../assets/img/enemy_proc3.png"/>
     <colision name="enemy_projectile_2">
         <p pos="27,26"/>
@@ -38,8 +40,10 @@
         <p pos="34,84"/>
         <p pos="27,84"/>
     </colision>
-    <projectile name="enemy_projectile_2_left" texture="enemy_projectile_2" colision="enemy_projectile_2" side="enemy" speed="15,0"/>
-    <projectile name="enemy_projectile_2_right" texture="enemy_projectile_2" colision="enemy_projectile_2" side="enemy" speed="-15,0"/>
+    <projectile name="enemy_projectile_2_left" texture="enemy_projectile_2" colision="enemy_projectile_2" side="enemy"
+                speed="15,0"/>
+    <projectile name="enemy_projectile_2_right" texture="enemy_projectile_2" colision="enemy_projectile_2" side="enemy"
+                speed="-15,0"/>
     <texture name="enemy_projectile_3" path="../assets/img/enemy_proc4.png"/>
     <colision name="enemy_projectile_3">
         <p pos="21,69"/>
@@ -47,7 +51,8 @@
         <p pos="33,81"/>
         <p pos="21,81"/>
     </colision>
-    <projectile name="enemy_projectile_3" texture="enemy_projectile_3" colision="enemy_projectile_3" side="enemy" speed="0,9"/>
+    <projectile name="enemy_projectile_3" texture="enemy_projectile_3" colision="enemy_projectile_3" side="enemy"
+                speed="0,9"/>
 
 
     <texture name="enemy_0" path="../assets/img/enemy1.png"/>
@@ -105,7 +110,8 @@
 
 
     <texture name="explosion_0" path="../assets/img/explosion1.png"/>
-    <animation name="explosion_0" texture_name="explosion_0" frame_width="89" frame_height="89" nframes="10" frames_in_row="10"/>
+    <animation name="explosion_0" texture_name="explosion_0" frame_width="89" frame_height="89" nframes="10"
+               frames_in_row="10"/>
 
     <texture name="jump" path="../assets/img/jump_animation.png"/>
     <animation name="jump" texture_name="jump" frame_height="128" frame_width="128" nframes="16" frames_in_row="4"/>
@@ -117,7 +123,8 @@
         <p pos="10,25"/>
         <p pos="10,7"/>
     </colision>
-    <projectile name="player_projectile" texture="player_projectile" colision="player_projectile" side="player" speed="0,-8"/>
+    <projectile name="player_projectile" texture="player_projectile" colision="player_projectile" side="player"
+                speed="0,-8"/>
 
     <texture name="player" path="../assets/img/player_spritesheet.png"/>
     <animation name="player" texture_name="player" frame_height="52" frame_width="41" frames_in_row="5" nframes="5"/>
@@ -126,6 +133,33 @@
         <p pos="0,46"/>
         <p pos="40,46"/>
     </colision>
+
+    <enemy_ship_data name="level_1_enemy" ship_type="enemy_0" ai_type="1" hp="2">
+        <fired_projectile projectile_type="enemy_projectile_0" pos="12,0"/>
+    </enemy_ship_data>
+    <enemy_ship_data name="level_2_enemy" ship_type="enemy_1" ai_type="0" hp="3">
+        <fired_projectile projectile_type="enemy_projectile_1" pos="12,0"/>
+    </enemy_ship_data>
+
+    <levels>
+        <level display_name="level 1" background="background_level_1">
+            <enemy name="level_1_enemy" start_pos="0.0,100.0"/>
+            <enemy name="level_1_enemy" start_pos="50.0,100.0"/>
+            <enemy name="level_1_enemy" start_pos="100.0,100.0"/>
+            <enemy name="level_1_enemy" start_pos="150.0,100.0"/>
+            <enemy name="level_1_enemy" start_pos="200.0,100.0"/>
+        </level>
+        <level display_name="level 2" background="background_level_2">
+            <enemy name="level_1_enemy" start_pos="0.0,150.0"/>
+            <enemy name="level_1_enemy" start_pos="100.0,150.0"/>
+            <enemy name="level_1_enemy" start_pos="200.0,150.0"/>
+            <enemy name="level_1_enemy" start_pos="300.0,150.0"/>
+            <enemy name="level_1_enemy" start_pos="400.0,150.0"/>
+
+            <enemy name="level_2_enemy" start_pos="200.0,70.0"/>
+            <enemy name="level_2_enemy" start_pos="565.0,70.0"/>
+        </level>
+    </levels>
     <text name="credits" size="13">
         Menu &amp; credits background by StumpyStrust opengameart.org
         Ships and cursor design by Stephen Challener (Redshrike), hosted by OpenGameArt.org
@@ -138,5 +172,6 @@
         Laser sounds by dklon and bart opengameart.org
         Jump sound by Ogrebane opengameart.org
         Rest of graphics: Andrzej "Pojemnik" Gauza
-        Code: Tobiasz "StormyData" Szulc</text>
+        Code: Tobiasz "StormyData" Szulc
+    </text>
 </assets>

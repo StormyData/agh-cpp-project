@@ -11,6 +11,7 @@ void Projectile::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 void Projectile::update(float dt) {
     position+=data.speed * dt;
     sprite.setPosition(position);
+    update_position(position);
 }
 
 Projectile::Projectile(const ProjectileData& projectileData, sf::Vector2f position):

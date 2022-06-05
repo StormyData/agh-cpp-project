@@ -17,6 +17,9 @@ public:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override{target.draw(sprite, states);}
     void setPosition(sf::Vector2f pos){sprite.setPosition(pos);}
     void setScale(sf::Vector2f scale){sprite.setScale(scale);}
+
+    sf::Vector2f getSize();
+
 private:
     const AnimationData animationData;
     sf::Sprite sprite;

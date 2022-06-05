@@ -14,6 +14,7 @@ class AssetLoader
     std::unordered_map<std::string, ColisionData> colisions{};
     std::unordered_map<std::string, ProjectileData> projectile_types{};
     std::unordered_map<std::string, ShipType> ship_types{};
+    std::unordered_map<std::string, EnemyShipData> enemy_ship_types{};
     std::vector<LevelData> levels;
     std::unordered_map<std::string, displayText> strings;
     sf::Font font;
@@ -24,6 +25,9 @@ class AssetLoader
     void load_colision(tinyxml2::XMLElement* element, std::string where);
     void load_ship_type(tinyxml2::XMLElement* element, std::string where);
     void load_string(tinyxml2::XMLElement* element, std::string where);
+    void load_levels(tinyxml2::XMLElement* element, std::string where);
+    void load_level(tinyxml2::XMLElement* element, std::string where);
+    void load_enemy_ship_data(tinyxml2::XMLElement* element, std::string where);
     void load_file(const std::string& path);
 public:
     const sf::Texture& get_texture(const std::string& name) const
@@ -62,10 +66,7 @@ public:
     }
     ~AssetLoader()
     {
-        for(auto & texture : textures)
-        {
-            delete texture.second;
-        }
+        std::for_each(textures.begin(), textures.end(), [](auto pair){delete pair.second;});
     }
 
     AnimationData get_animation(const std::string &name)

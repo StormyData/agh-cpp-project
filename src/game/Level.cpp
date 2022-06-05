@@ -22,7 +22,7 @@ Level::Level(const LevelData &data, Context &context) : Screen(context,false), d
     n_of_enemies = data.ships.size();
     background.setTexture(context.assetLoader.get_texture(data.background),true);
     for(const auto& ship_blueprint : data.ships)
-        ships.push_back(new Ship(ship_blueprint, context.assetLoader));
+        ships.push_back(new Ship(ship_blueprint, context, this));
 }
 
 bool Level::process_additional_event(sf::Event &event) {
@@ -30,21 +30,61 @@ bool Level::process_additional_event(sf::Event &event) {
 }
 
 bool Level::update_logic(float dt) {
-    bool should_update = false;
     if(n_of_enemies == 0)
     {
         set_return(get_level_screen(context,data.next_level_no));
     }
-//    {
-//        Screen* main = new MainMenuScreen(context);
-//        displayText displayText;
-//        displayText.text = "Defeat!!!";
-//        displayText.style = 0;
-//        displayText.size = 70;
-//        return new TimedTextScreen(context, displayText, 1, "main_menu_background", main);
-//    }
+    for(Ship* ship : ships)
+    {
+        ship->update(dt);
+    }
+    sf::Vector2f screen_size = (sf::Vector2f)context.window.getSize();
+    for(auto projectile_it = projectiles.begin(); projectile_it != projectiles.end();)
+    {
+        (*projectile_it)->update(dt);
+        sf::Vector2f projectile_pos = (*projectile_it)->getPosition();
+        if(projectile_pos.x < 0 || projectile_pos.x > screen_size.x ||
+            projectile_pos.y < 0 || projectile_pos.y > screen_size.y)
+        {
+            delete *projectile_it;
+            projectile_it = projectiles.erase(projectile_it);
+        }
+        else
+            projectile_it++;
+    }
+    for(auto ship_it = ships.begin(); ship_it != ships.end();)
+    {
+        bool removed = false;
+        for(auto projectile_it = projectiles.begin(); projectile_it != projectiles.end();)
+        {
+            if((*ship_it)->get_hit_by(**projectile_it))
+            {
+                delete *projectile_it;
+                projectile_it = projectiles.erase(projectile_it);
+                if((*ship_it)->is_destroyed())
+                {
+                    delete *ship_it;
+                    removed = true;
+                    break;
+                }
+            } else
+                projectile_it++;
+        }
+        if(removed)
+            ship_it = ships.erase(ship_it);
+        else
+            ship_it++;
+    }
+    return true;
+}
 
-    return should_update;
+void Level::on_defeat() {
+    Screen* main = new MainMenuScreen(context);
+    displayText displayText;
+    displayText.text = "Defeat!!!";
+    displayText.style = 0;
+    displayText.size = 70;
+    set_return(new TimedTextScreen(context, displayText, 1, "main_menu_background", main));
 }
 
 
@@ -65,4 +105,13 @@ Screen *Level::get_level_screen(Context& context, unsigned int n) {
     dt.style = 0;
     dt.size = 70;
     return new TimedTextScreen(context,dt, 1, data.background, main);
+}
+
+void Level::add_projectile(Projectile * projectile) {
+    projectiles.push_back(projectile);
+}
+
+Level::~Level() {
+    std::destroy(ships.begin(), ships.end());
+    std::destroy(projectiles.begin(), projectiles.end());
 }

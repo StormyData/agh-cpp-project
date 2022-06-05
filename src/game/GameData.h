@@ -41,15 +41,23 @@ struct displayText
 
 struct ShipData {
     ShipType type;
-    int ai_type;
     int hp;
     std::vector<std::pair<ProjectileData, sf::Vector2f>> fired_projectiles;
     sf::Vector2f  start_pos;
 };
+struct EnemyShipData : public ShipData
+{
+    int ai_type;
+};
+
+struct PlayerData : public ShipData
+{
+    float resetTimer;
+};
 
 struct LevelData {
     std::string background;
-    std::vector<ShipData> ships;
+    std::vector<EnemyShipData> ships;
     std::string display_name;
     unsigned int next_level_no;
 };

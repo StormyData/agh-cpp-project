@@ -6,14 +6,12 @@
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "OUT OF SPACE");
-    Context context{window};
-    context.soundEngine = new SoundEngine(context.assetLoader);
+    Context context(window);
     Screen* screen = new MainMenuScreen(context);
     while (screen != nullptr)
     {
         screen = screen->run();
     }
-    delete context.soundEngine;
     window.close();
     return 0;
 }
