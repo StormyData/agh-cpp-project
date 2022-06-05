@@ -23,7 +23,7 @@
         <p pos="10,7"/>
     </colision>
     <projectile name="enemy_projectile_0" texture="enemy_projectile_0" colision="enemy_projectile_0" side="enemy"
-                speed="0,7"/>
+                speed="0,420"/>
     <texture name="enemy_projectile_1" path="../assets/img/enemy_proc2.png"/>
     <colision name="enemy_projectile_1">
         <p pos="4,8"/>

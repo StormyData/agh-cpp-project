@@ -15,5 +15,6 @@ void Projectile::update(float dt) {
 }
 
 Projectile::Projectile(const ProjectileData& projectileData, sf::Vector2f position):
-Collidable(projectileData.colision), position(position) , data(projectileData) {
+Collidable(projectileData.colision), sprite(*projectileData.texture) , position(position), data(projectileData) {
+
 }

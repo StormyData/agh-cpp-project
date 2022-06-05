@@ -22,7 +22,7 @@ Level::Level(const LevelData &data, Context &context) : Screen(context,false), d
     n_of_enemies = data.ships.size();
     background.setTexture(context.assetLoader.get_texture(data.background),true);
     for(const auto& ship_blueprint : data.ships)
-        ships.push_back(new Ship(ship_blueprint, context, this));
+        ships.push_back(new EnemyShip(&ship_blueprint, context, this));
 }
 
 bool Level::process_additional_event(sf::Event &event) {

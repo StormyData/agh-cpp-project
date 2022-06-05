@@ -23,8 +23,18 @@ sf::Vector2f parse_point(const std::string &s, const std::string &where = "") {
     if (off == std::string::npos) {
         throw std::invalid_argument("invalid point literal" + s + " in " + where);
     }
-    float x = std::strtof(s.substr(0, off).c_str(), nullptr);
-    float y = std::strtof(s.substr(off, s.size() - off - 1).c_str(), nullptr);
+    char* end;
+
+    std::string tmp = s.substr(0, off);
+    float x = std::strtof(tmp.c_str(), &end);
+    if(end == tmp.c_str())
+        throw std::invalid_argument("invalid point literal" + s + " (cannot parse " + tmp + ") in " + where);
+
+    tmp = s.substr(off + 1, s.size() - off - 1);
+    float y = std::strtof(tmp.c_str(), &end);
+    if(end == tmp.c_str())
+        throw std::invalid_argument("invalid point literal" + s + + " (cannot parse " + tmp + ") in " + where);
+
     return {x, y};
 }
 
