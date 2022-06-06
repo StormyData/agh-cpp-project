@@ -16,9 +16,11 @@ class AssetLoader
     std::unordered_map<std::string, ProjectileData> projectile_types{};
     std::unordered_map<std::string, ShipType> ship_types{};
     std::unordered_map<std::string, EnemyShipData> enemy_ship_types{};
-    std::unordered_map<std::string, sf::SoundBuffer*> sounds;
+    std::unordered_map<std::string, SoundProperties> sounds;
     std::vector<LevelData> levels;
     std::unordered_map<std::string, displayText> strings;
+    std::unordered_map<std::string, std::string> misc_config;
+    std::unordered_map<std::string, MusicProperties> music;
     sf::Font font;
     PlayerData playerData;
 
@@ -33,19 +35,22 @@ class AssetLoader
     void load_enemy_ship_data(tinyxml2::XMLElement* element, std::string where);
     void load_player_ship_data(tinyxml2::XMLElement* element, std::string where);
     void load_sound(tinyxml2::XMLElement* element, std::string where);
+    void load_misc_config(tinyxml2::XMLElement* element, std::string where);
+    void load_music(tinyxml2::XMLElement* element, std::string where);
     void load_file(const std::string& path);
     std::unordered_map<std::string, std::function<void(tinyxml2::XMLElement*, std::string)>> parse_functions{
-            {"texture", std::bind(&AssetLoader::load_texture, this, std::placeholders::_1, std::placeholders::_2)},
-            {"animation", std::bind(&AssetLoader::load_anim, this ,std::placeholders::_1, std::placeholders::_2)},
-            {"projectile", std::bind(&AssetLoader::load_projectile, this ,std::placeholders::_1, std::placeholders::_2)},
-            {"colision", std::bind(&AssetLoader::load_colision, this ,std::placeholders::_1, std::placeholders::_2)},
-            {"ship_type", std::bind(&AssetLoader::load_ship_type, this ,std::placeholders::_1, std::placeholders::_2)},
-            {"text", std::bind(&AssetLoader::load_string, this ,std::placeholders::_1, std::placeholders::_2)},
-            {"levels", std::bind(&AssetLoader::load_levels, this ,std::placeholders::_1, std::placeholders::_2)},
-            {"enemy_ship_data", std::bind(&AssetLoader::load_enemy_ship_data, this ,std::placeholders::_1, std::placeholders::_2)},
-            {"player_ship_data", std::bind(&AssetLoader::load_player_ship_data, this ,std::placeholders::_1, std::placeholders::_2)},
-            {"sound", std::bind(&AssetLoader::load_sound, this ,std::placeholders::_1, std::placeholders::_2)},
-
+            {"texture", [this](auto && PH1, auto && PH2) { load_texture(std::forward<decltype(PH1)>(PH1), std::forward<decltype(PH2)>(PH2)); }},
+            {"animation", [this](auto && PH1, auto && PH2) { load_anim(std::forward<decltype(PH1)>(PH1), std::forward<decltype(PH2)>(PH2)); }},
+            {"projectile", [this](auto && PH1, auto && PH2) { load_projectile(std::forward<decltype(PH1)>(PH1), std::forward<decltype(PH2)>(PH2)); }},
+            {"colision", [this](auto && PH1, auto && PH2) { load_colision(std::forward<decltype(PH1)>(PH1), std::forward<decltype(PH2)>(PH2)); }},
+            {"ship_type", [this](auto && PH1, auto && PH2) { load_ship_type(std::forward<decltype(PH1)>(PH1), std::forward<decltype(PH2)>(PH2)); }},
+            {"text", [this](auto && PH1, auto && PH2) { load_string(std::forward<decltype(PH1)>(PH1), std::forward<decltype(PH2)>(PH2)); }},
+            {"levels", [this](auto && PH1, auto && PH2) { load_levels(std::forward<decltype(PH1)>(PH1), std::forward<decltype(PH2)>(PH2)); }},
+            {"enemy_ship_data", [this](auto && PH1, auto && PH2) { load_enemy_ship_data(std::forward<decltype(PH1)>(PH1), std::forward<decltype(PH2)>(PH2)); }},
+            {"player_ship_data", [this](auto && PH1, auto && PH2) { load_player_ship_data(std::forward<decltype(PH1)>(PH1), std::forward<decltype(PH2)>(PH2)); }},
+            {"sound", [this](auto && PH1, auto && PH2) { load_sound(std::forward<decltype(PH1)>(PH1), std::forward<decltype(PH2)>(PH2)); }},
+            {"misc_config", [this](auto && PH1, auto && PH2) { load_misc_config(std::forward<decltype(PH1)>(PH1), std::forward<decltype(PH2)>(PH2)); }},
+            {"music", [this](auto && PH1, auto && PH2){ load_music(std::forward<decltype(PH1)>(PH1), std::forward<decltype(PH2)>(PH2)); }}
     };
 public:
     const sf::Texture& get_texture(const std::string& name) const
@@ -76,7 +81,7 @@ public:
             throw std::invalid_argument("unknown string name: " + name);
         return strings.at(name);
     }
-    const sf::SoundBuffer* get_sound_buffer(const std::string& name) const
+    SoundProperties get_sound_buffer(const std::string& name) const
     {
         if(!sounds.contains(name))
             throw std::invalid_argument("unknown sound name: " + name);
@@ -92,6 +97,7 @@ public:
     ~AssetLoader()
     {
         std::for_each(textures.begin(), textures.end(), [](auto pair){delete pair.second;});
+        std::for_each(sounds.begin(), sounds.end(), [](auto pair){delete pair.second.buffer;});
     }
 
     AnimationData get_animation(const std::string &name)
@@ -104,4 +110,21 @@ public:
     const std::vector<LevelData> &get_levels();
 
     const PlayerData &get_player_ship_data();
+
+    const std::string &get_misc_config(const std::string &key) const
+    {
+        if(!misc_config.contains(key))
+            throw std::invalid_argument("unknown misc config key: " + key);
+        return misc_config.at(key);
+
+    }
+
+    MusicProperties get_music_properties(const std::string &name)
+    {
+        if(!music.contains(name))
+            throw std::invalid_argument("unknown music pool name: " + name);
+        return music.at(name);
+
+    }
+
 };

@@ -38,7 +38,7 @@ Button::Button(const ButtonProperties& properties, const AssetLoader &assetLoade
     h_align(properties.h_align), v_align(properties.v_align) {
     display_text.setString(properties.text);
     display_text.setFont(assetLoader.get_font());
-    const sf::Texture& cursor_texture_ref = assetLoader.get_texture("cursor");
+    const sf::Texture& cursor_texture_ref = assetLoader.get_texture(assetLoader.get_misc_config("button_cursor_texture"));
     cursors[0].setTexture(cursor_texture_ref, true);
     cursors[1].setTexture(cursor_texture_ref, true);
     cursors[0].setScale(3,3);

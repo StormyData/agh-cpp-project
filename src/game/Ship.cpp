@@ -18,8 +18,8 @@ bool Ship::get_hit_by(const Projectile &projectile) {
     {
         if(!is_dead)
         {
-            level_ptr->add_effect("explosion_0", position + animation.getSize()/2.0f);
-            context.soundEngine.play_sound("big_explosion_sound");
+            level_ptr->add_effect(context.assetLoader.get_misc_config("ship_explosion_animation"), position + animation.getSize()/2.0f);
+            context.soundEngine.play_sound(context.assetLoader.get_misc_config("ship_explosion_sound"));
         }
 
         is_dead = true;

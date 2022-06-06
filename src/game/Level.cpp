@@ -39,7 +39,7 @@ bool Level::update_logic(float dt) {
 
     if(n_of_enemies == 0)
     {
-        context.soundEngine.play_sound("jump_sound");
+        context.soundEngine.play_sound(context.assetLoader.get_misc_config("level_switch_sound"));
         set_return(get_level_screen(context,data.next_level_no));
     }
     for(Ship* ship : ships)
@@ -101,7 +101,7 @@ void Level::on_defeat() {
     displayText.text = "Defeat!!!";
     displayText.style = 0;
     displayText.size = 70;
-    set_return(new TimedTextScreen(context, displayText, 1, "main_menu_background", main));
+    set_return(new TimedTextScreen(context, displayText, 1, context.assetLoader.get_misc_config("main_menu_background"), main));
 }
 
 
@@ -113,7 +113,7 @@ Screen *Level::get_level_screen(Context& context, unsigned int n) {
         dt.text = "Victory!!!";
         dt.style = 0;
         dt.size = 70;
-        return new TimedTextScreen(context,dt, 3, "main_menu_background", main);
+        return new TimedTextScreen(context,dt, 3, context.assetLoader.get_misc_config("main_menu_background"), main);
     }
     LevelData data = context.assetLoader.get_levels()[n];
     Screen* main = new Level(data,context);

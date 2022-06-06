@@ -23,6 +23,7 @@ public:
     void add_effect(const std::string& name, sf::Vector2f pos){effectHolder.create_effect(pos, name);};
     ~Level();
 private:
+    void on_enter() override { context.soundEngine.play_music(context.assetLoader.get_misc_config("game_music"));};
     EffectHolder effectHolder;
     const LevelData data;
     sf::Sprite background;

@@ -8,8 +8,7 @@
 #include "../game/Level.h"
 
 MainMenuScreen::MainMenuScreen(Context &context) : Screen(context, false),
-    enemy1(context.assetLoader.get_animation("enemy_1")),
-    background_sprite(context.assetLoader.get_texture("main_menu_background"))
+    background_sprite(context.assetLoader.get_texture(context.assetLoader.get_misc_config("main_menu_background")))
 {
     title = sf::Text("OUT OF SPACE", context.assetLoader.get_font(), 70);
     title.setStyle(sf::Text::Bold);
@@ -61,7 +60,7 @@ bool MainMenuScreen::update_logic(float dt) {
     if(goto_credits)
     {
         Screen* back = new MainMenuScreen(context);
-        Screen* s = new ButtonExitTextScreen(context,context.assetLoader.get_string("credits"),"back","main_menu_background", back);
+        Screen* s = new ButtonExitTextScreen(context,context.assetLoader.get_string("credits"),"back",context.assetLoader.get_misc_config("main_menu_background"), back);
         set_return(s);
         goto_credits = false;
     }
@@ -71,7 +70,7 @@ bool MainMenuScreen::update_logic(float dt) {
         set_return(s);
         goto_play = false;
     }
-    return enemy1.update(dt);
+    return false;
 }
 
 void MainMenuScreen::draw() {
@@ -79,5 +78,4 @@ void MainMenuScreen::draw() {
     context.window.draw(play_button);
     context.window.draw(title);
     context.window.draw(credits_button);
-    context.window.draw(enemy1);
 }

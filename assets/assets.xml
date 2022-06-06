@@ -1,14 +1,21 @@
 <assets>
 
-    <sound name="enemy_projectile_0_sound" path="../assets/sound/laser3.wav"/>
-    <sound name="player_shoot_sound" path="../assets/sound/laser3.wav"/>
-    <sound name="enemy_projectile_1_sound" path="../assets/sound/laser5.wav"/>
-    <sound name="enemy_projectile_2_sound" path="../assets/sound/laser3.wav"/>
-    <sound name="enemy_projectile_3_sound" path="../assets/sound/space laser.wav"/>
-    <sound name="enemy_projectile_4_sound" path="../assets/sound/boss_laser.wav"/>
-    <sound name="jump_sound" path="../assets/sound/jump.wav"/>
-    <sound name="big_explosion_sound" path="../assets/sound/DeathFlash.flac"/>
-
+    <sound name="enemy_projectile_0_sound" path="../assets/sound/laser3.wav" volume="12"/>
+    <sound name="player_shoot_sound" path="../assets/sound/laser3.wav" volume="12"/>
+    <sound name="enemy_projectile_1_sound" path="../assets/sound/laser5.wav" volume="12"/>
+    <sound name="enemy_projectile_2_sound" path="../assets/sound/laser3.wav" volume="12"/>
+    <sound name="enemy_projectile_3_sound" path="../assets/sound/space laser.wav" volume="12"/>
+    <sound name="enemy_projectile_4_sound" path="../assets/sound/boss_laser.wav" volume="12"/>
+    <sound name="jump_sound" path="../assets/sound/jump.wav" volume="25"/>
+    <sound name="big_explosion_sound" path="../assets/sound/DeathFlash.flac" volume="50"/>
+    <music name="main_menu_loop">
+        <file path="../assets/sound/ObservingTheStar.ogg" volume="12"/>
+    </music>
+    <music name="game_loop">
+        <file path="../assets/sound/Cyberpunk Moonlight Sonata.wav" volume="5"/>
+        <file path="../assets/sound/through space.ogg" volume="5"/>
+        <file path="../assets/sound/high tech lab.flac" volume="5"/>
+    </music>
     <texture name="background_level_1" path="../assets/img/bg_game1.png"/>
     <texture name="background_level_2" path="../assets/img/bg_game2.png"/>
     <texture name="background_level_3" path="../assets/img/bg_game3.png"/>
@@ -290,4 +297,14 @@
             Rest of graphics: Andrzej "Pojemnik" Gauza
             Code: Tobiasz "StormyData" Szulc
         </text>
+        <misc_config>
+            <entry key="ship_explosion_animation" value="explosion_0"/>
+            <entry key="ship_explosion_sound" value="big_explosion_sound"/>
+            <entry key="level_switch_sound" value="jump_sound"/>
+            <entry key="main_menu_background" value="main_menu_background"/>
+            <entry key="button_cursor_texture" value="cursor"/>
+
+            <entry key="main_menu_music" value="main_menu_loop"/>
+            <entry key="game_music" value="game_loop"/>
+        </misc_config>
     </assets>

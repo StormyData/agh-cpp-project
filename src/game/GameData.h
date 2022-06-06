@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Audio.hpp>
 #include "../gui/Animation.h"
 enum Side{PLAYER, ENEMY};
 
@@ -62,4 +63,13 @@ struct LevelData {
     std::vector<EnemyShipData> ships;
     std::string display_name;
     unsigned int next_level_no;
+};
+
+struct SoundProperties{
+    sf::SoundBuffer* buffer;
+    float volume;
+};
+struct MusicProperties
+{
+    std::vector<std::pair<std::string, float>> files_with_volumes;
 };

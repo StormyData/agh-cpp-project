@@ -250,8 +250,49 @@ void AssetLoader::load_sound(tinyxml2::XMLElement *element, std::string where) {
     std::string name = get_attribute_or_throw(element, "name", where)->Value();
     where += "(" + name + ")";
     std::string path = get_attribute_or_throw(element, "path", where)->Value();
+    float volume = get_attribute_or_throw(element, "volume", where)->FloatValue();
     if(!sounds.contains(name))
-        sounds[name] = new sf::SoundBuffer;
-    sounds[name]->loadFromFile(path);
+        sounds[name].buffer = new sf::SoundBuffer;
+    sounds[name].buffer->loadFromFile(path);
+    sounds[name].volume = volume;
+}
+
+
+void AssetLoader::load_misc_config(tinyxml2::XMLElement *element, std::string where) {
+    where += "::misc_config";
+    tinyxml2::XMLElement *child = element->FirstChildElement();
+    int i = 0;
+    while (child != nullptr) {
+        if (child->Name() == std::string("entry")) {
+            std::string p_where = where + "[" + std::to_string(i) + "]::entry";
+            std::string key = get_attribute_or_throw(child, "key", p_where)->Value();
+            std::string value = get_attribute_or_throw(child, "value")->Value();
+            misc_config[key] = value;
+        }
+        child = child->NextSiblingElement();
+        i++;
+    }
+
+}
+
+void AssetLoader::load_music(tinyxml2::XMLElement* element, std::string where)
+{
+    where += "::music";
+    std::string name = get_attribute_or_throw(element, "name", where)->Value();
+    where += "(" + name + ")";
+    music[name] = MusicProperties();
+    tinyxml2::XMLElement *child = element->FirstChildElement();
+    int i = 0;
+    while (child != nullptr) {
+        if (child->Name() == std::string("file")) {
+            std::string p_where = where + "[" + std::to_string(i) + "]::file";
+            std::string path = get_attribute_or_throw(child, "path", p_where)->Value();
+            float value = get_attribute_or_throw(child, "volume")->FloatValue();
+            music[name].files_with_volumes.emplace_back(path, value);
+        }
+        child = child->NextSiblingElement();
+        i++;
+    }
+
 }
 

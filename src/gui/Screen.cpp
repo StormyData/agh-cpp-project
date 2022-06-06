@@ -19,6 +19,10 @@ Screen* Screen::run() {
             {
                 if (event.type == sf::Event::Closed)
                     on_window_exit_pressed();
+                if (event.type == sf::Event::Resized)
+                {
+
+                }
                 redraw_required |= process_additional_event(event);
             }
             context.soundEngine.update();
