@@ -34,6 +34,6 @@ add_executable(project main.cpp
         src/gui/Screen.cpp
         src/gui/Screen.h
         src/gui/auxilary_screens.cpp
-        src/gui/auxilary_screens.h)
+        src/gui/auxilary_screens.h src/game/HPBar.cpp src/game/HPBar.h)
 target_link_libraries(project sfml-graphics sfml-window sfml-system sfml-audio tinyxml2)
 target_compile_options(project PUBLIC -Wall -Werror)

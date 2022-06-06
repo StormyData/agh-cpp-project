@@ -9,6 +9,7 @@
 #include "../system/Collidable.h"
 #include "Projectile.h"
 #include "../system/context.h"
+#include "HPBar.h"
 class Level;
 
 class Ship : public sf::Drawable, private Collidable
@@ -23,6 +24,7 @@ protected:
     Animation animation;
     Context& context;
     Level* level_ptr;
+    HPBar hpBar;
     std::vector<std::pair<ProjectileData, sf::Vector2f>> fired_projectiles;
 public:
     Ship(const ShipData* shipData, Side side, Context& context, Level*);

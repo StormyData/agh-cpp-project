@@ -28,6 +28,7 @@ struct ShipType
 {
     ColisionData colision;
     AnimationData animation;
+    sf::Vector2f hp_bar_offset;
 };
 
 struct displayText

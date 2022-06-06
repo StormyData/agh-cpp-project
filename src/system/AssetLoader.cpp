@@ -105,9 +105,11 @@ void AssetLoader::load_ship_type(tinyxml2::XMLElement *element, std::string wher
     where += "(" + name + ")";
     std::string animation_name = get_attribute_or_throw(element, "animation", where)->Value();
     std::string colision_name = get_attribute_or_throw(element, "colision", where)->Value();
+    sf::Vector2f hp_bar_offset = parse_point(get_attribute_or_throw(element, "hp_bar_offset", where)->Value(), where + "{hp_bar_offset}");
     ship_types[name] = ShipType();
     ship_types[name].colision = get_colision(colision_name);
     ship_types[name].animation = get_animation(animation_name);
+    ship_types[name].hp_bar_offset = hp_bar_offset;
 }
 
 void AssetLoader::load_colision(tinyxml2::XMLElement *element, std::string where) {

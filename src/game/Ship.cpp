@@ -13,6 +13,7 @@ bool Ship::get_hit_by(const Projectile &projectile) {
     if(!colides(projectile))
         return false;
     health--;
+    hpBar.set_hp(health);
     if(health<=0)
         is_dead = true;
     return true;
@@ -21,6 +22,7 @@ bool Ship::get_hit_by(const Projectile &projectile) {
 
 void Ship::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     target.draw(animation, states);
+    target.draw(hpBar, states);
 }
 
 void Ship::update(float dt) {
@@ -47,6 +49,7 @@ void Ship::update(float dt) {
     }
     animation.setPosition(position);
     animation.update(dt);
+    hpBar.setPosition(position);
     speed = {0.0f, 0.0f};
     update_position(position);
 }
@@ -54,7 +57,9 @@ void Ship::update(float dt) {
 Ship::Ship(const ShipData* shipData, Side side, Context &context, Level* level):
     Collidable(shipData->type.colision), health(shipData->hp),
     side(side), position(shipData->start_pos), animation(shipData->type.animation),
-    context(context), level_ptr(level), fired_projectiles(shipData->fired_projectiles){}
+    context(context), level_ptr(level),
+    hpBar(shipData->hp, shipData->type.hp_bar_offset + animation.getSize()/2.0f),
+    fired_projectiles(shipData->fired_projectiles) {}
 
 void Ship::fire_projectiles() {
     for(auto& pair : fired_projectiles)
