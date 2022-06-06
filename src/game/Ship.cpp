@@ -51,10 +51,10 @@ void Ship::update(float dt) {
     update_position(position);
 }
 
-Ship::Ship(const ShipData* shipData, Context &context, Level* level):
+Ship::Ship(const ShipData* shipData, Side side, Context &context, Level* level):
     Collidable(shipData->type.colision), health(shipData->hp),
-    position(shipData->start_pos), animation(shipData->type.animation), context(context),
-    level_ptr(level), fired_projectiles(shipData->fired_projectiles){}
+    side(side), position(shipData->start_pos), animation(shipData->type.animation),
+    context(context), level_ptr(level), fired_projectiles(shipData->fired_projectiles){}
 
 void Ship::fire_projectiles() {
     for(auto& pair : fired_projectiles)
@@ -62,41 +62,41 @@ void Ship::fire_projectiles() {
 }
 
 PlayerShip::PlayerShip(Level *level, const PlayerData* shipData, Context &context) :
-    Ship(shipData, context, level), reset_timer(shipData->resetTimer) {
+    Ship(shipData, PLAYER, context, level), reset_timer(shipData->resetTimer) {
 
 }
 
 void PlayerShip::update(float dt) {
     handle_keyboard(dt);
     Ship::update(dt);
-    if(reset_timer > 0)
+    if(timer > 0)
     {
-        reset_timer -= dt;
-        if(reset_timer < 0)
-            reset_timer = 0;
+        timer -= dt;
+        if(timer < 0)
+            timer = 0;
     }
 }
 
 void PlayerShip::handle_keyboard(float dt) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
-        speed = {-speed_change, 0};
+        speed += {-speed_change, 0};
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
-        speed = {speed_change, 0};
+        speed += {speed_change, 0};
 
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     {
-        speed = {0, -speed_change};
+        speed += {0, -speed_change};
 
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
     {
-        speed = {0, speed_change};
+        speed += {0, speed_change};
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || timer == 0)
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && timer == 0)
     {
         timer = reset_timer;
         fire_projectiles();
@@ -165,8 +165,8 @@ void EnemyShip::update(float dt) {
             {
                 _side = 1;
             }
-            speed += (sf::Vector2f(_baseSpeed*_side, std::sin(_aiVar)));
-            _aiVar += 0.01f;
+            speed += (sf::Vector2f(_baseSpeed*_side, std::sin(_aiVar) *60.0f));
+            _aiVar += 0.01f * dt * 60;
             break;
         case 4:
             //left to right sin speed
@@ -178,23 +178,23 @@ void EnemyShip::update(float dt) {
             {
                 _side = 1;
             }
-            speed += (sf::Vector2f (fabsf(std::sin(_aiVar))*_side*1.5f, std::cos(_aiVar)));
-            _aiVar += 0.01f;
+            speed += (sf::Vector2f (fabsf(std::sin(_aiVar))* _side *1.5f *60.0f, std::cos(_aiVar) *60.0f));
+            _aiVar += 0.01f * dt * 60;
             break;
         case 5:
             //circle
-            speed += (sf::Vector2f (std::cos(_aiVar), std::sin(_aiVar)));
-            _aiVar += 0.01f;
+            speed += (sf::Vector2f (std::cos(_aiVar) * 60.0f, std::sin(_aiVar)  * 60.0f));
+            _aiVar += 0.01f * dt * 60;
             break;
         case 6:
             //8
-            speed += (sf::Vector2f (std::cos(_aiVar), std::cos(_aiVar*2)));
-            _aiVar += 0.01f;
+            speed += (sf::Vector2f (std::cos(_aiVar)  * 60.0f, std::cos(_aiVar*2)  * 60.0f));
+            _aiVar += 0.01f * dt * 60;
             break;
         case 7:
             //diagonal variable speed
-            speed += (sf::Vector2f (std::cos(_aiVar), std::cos(_aiVar)));
-            _aiVar += 0.02f;
+            speed += (sf::Vector2f (std::cos(_aiVar)  * 60.0f, std::cos(_aiVar)  * 60.0f));
+            _aiVar += 0.02f * dt * 60;
             break;
         case 8:
             //polynomial
@@ -206,9 +206,9 @@ void EnemyShip::update(float dt) {
             {
                 _side = 1;
             }
-            speed += (sf::Vector2f ((_aiVar + 2)*(_aiVar + 1)*(_aiVar - 0.5)*(_aiVar - 1.5)*_side, std::cos(_aiVar2)));
-            _aiVar += 0.01f * dt;
-            _aiVar2 += 0.01f * dt;
+            speed += (sf::Vector2f ((_aiVar + 2)*(_aiVar + 1)*(_aiVar - 0.5)*(_aiVar - 1.5)*_side *60.0f, std::cos(_aiVar2) *60.0f));
+            _aiVar += 0.01f * dt * 60;
+            _aiVar2 += 0.01f * dt * 60;
             if (_aiVar > 1.9)
                 _aiVar = -2.3f;
             break;
@@ -229,7 +229,8 @@ void EnemyShip::update(float dt) {
 }
 std::normal_distribution<float>* EnemyShip::distribution = new std::normal_distribution(0.8306567833333334f, 0.04800254879908575f);
 
-EnemyShip::EnemyShip(const EnemyShipData* shipData, Context &context, Level* level): Ship(shipData, context, level), ai_type(shipData->ai_type)
+EnemyShip::EnemyShip(const EnemyShipData* shipData, Context &context, Level* level):
+Ship(shipData, ENEMY, context, level), ai_type(shipData->ai_type)
 {
     timer = (*distribution)(context.randomEngine);
     if (ai_type == -1)

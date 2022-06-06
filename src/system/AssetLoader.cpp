@@ -75,22 +75,8 @@ void AssetLoader::load_file(const std::string &path) {
     tinyxml2::XMLElement *element = root->FirstChildElement();
     while (element != nullptr) {
         std::string name = element->Name();
-        if (name == "texture")
-            load_texture(element, "assets");
-        else if (name == "animation")
-            load_anim(element, "assets");
-        else if (name == "projectile")
-            load_projectile(element, "assets");
-        else if (name == "colision")
-            load_colision(element, "assets");
-        else if (name == "ship_type")
-            load_ship_type(element, "assets");
-        else if (name == "text")
-            load_string(element, "assets");
-        else if (name == "levels")
-            load_levels(element, "assets");
-        else if(name == "enemy_ship_data")
-            load_enemy_ship_data(element, "assets");
+        if(parse_functions.contains(name))
+            parse_functions[name](element, "assets");
         element = element->NextSiblingElement();
     }
 
@@ -104,11 +90,13 @@ void AssetLoader::load_projectile(tinyxml2::XMLElement *element, std::string whe
     std::string colision_name = get_attribute_or_throw(element, "colision", where)->Value();
     Side side = parse_side(get_attribute_or_throw(element, "side", where)->Value(), where + "{side}");
     sf::Vector2f speed = parse_point(get_attribute_or_throw(element, "speed", where)->Value(), where + "{speed}");
+    std::string firing_sound_name = get_attribute_or_throw(element,"sound", where)->Value();
     projectile_types[name] = ProjectileData();
     projectile_types[name].side = side;
     projectile_types[name].colision = get_colision(colision_name);
     projectile_types[name].texture = &get_texture(texture_name);
     projectile_types[name].speed = speed;
+    projectile_types[name].firing_sound_name = firing_sound_name;
 }
 
 void AssetLoader::load_ship_type(tinyxml2::XMLElement *element, std::string where) {
@@ -127,14 +115,13 @@ void AssetLoader::load_colision(tinyxml2::XMLElement *element, std::string where
     std::string name = get_attribute_or_throw(element, "name", where)->Value();
     where += "(" + name + ")";
     colisions[name] = ColisionData();
-    std::vector<sf::Vector2f> &data = colisions[name].points;
     tinyxml2::XMLElement *child = element->FirstChildElement();
     int i = 0;
     while (child != nullptr) {
         if (child->Name() == std::string("p")) {
             std::string p_where = where + ":[" + std::to_string(i) + "]:p";
             std::string p_str = get_attribute_or_throw(child, "pos", p_where)->Value();
-            data.push_back(parse_point(p_str, p_where));
+            colisions[name].points.push_back(parse_point(p_str, p_where));
         }
         i++;
         child = child->NextSiblingElement();
@@ -225,5 +212,44 @@ void AssetLoader::load_enemy_ship_data(tinyxml2::XMLElement *element, std::strin
     data.type = ship_types[ship_type];
     data.hp = hp;
     enemy_ship_types[name] = data;
+}
+
+const PlayerData &AssetLoader::get_player_ship_data() {
+    return playerData;
+}
+
+void AssetLoader::load_player_ship_data(tinyxml2::XMLElement *element, std::string where) {
+    where += "::player_ship_data";
+    std::string ship_type = get_attribute_or_throw(element, "ship_type", where)->Value();
+    float reset_timer = get_attribute_or_throw(element, "reset_timer", where)->FloatValue();
+    int hp = get_attribute_or_throw(element, "hp", where)->IntValue();
+    sf::Vector2f start_pos = parse_point(get_attribute_or_throw(element, "starting_pos", where)->Value(), where+"{starting_pos}");
+    tinyxml2::XMLElement *child = element->FirstChildElement();
+    playerData = PlayerData();
+    int i = 0;
+    while (child != nullptr) {
+        if (child->Name() == std::string("fired_projectile")) {
+            std::string p_where = where + "[" + std::to_string(i) + "]::fired_projectile";
+            std::string type = get_attribute_or_throw(child, "projectile_type", p_where)->Value();
+            sf::Vector2f offset = parse_point(get_attribute_or_throw(child, "pos", p_where)->Value(), p_where);
+            playerData.fired_projectiles.emplace_back(projectile_types[type], offset);
+        }
+        child = child->NextSiblingElement();
+        i++;
+    }
+    playerData.resetTimer = reset_timer;
+    playerData.start_pos = start_pos;
+    playerData.type = ship_types[ship_type];
+    playerData.hp = hp;
+}
+
+void AssetLoader::load_sound(tinyxml2::XMLElement *element, std::string where) {
+    where += "::sound";
+    std::string name = get_attribute_or_throw(element, "name", where)->Value();
+    where += "(" + name + ")";
+    std::string path = get_attribute_or_throw(element, "path", where)->Value();
+    if(!sounds.contains(name))
+        sounds[name] = new sf::SoundBuffer;
+    sounds[name]->loadFromFile(path);
 }
 

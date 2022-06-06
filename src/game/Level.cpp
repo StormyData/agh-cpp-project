@@ -23,6 +23,9 @@ Level::Level(const LevelData &data, Context &context) : Screen(context,false), d
     background.setTexture(context.assetLoader.get_texture(data.background),true);
     for(const auto& ship_blueprint : data.ships)
         ships.push_back(new EnemyShip(&ship_blueprint, context, this));
+
+    player = new PlayerShip(this, &context.assetLoader.get_player_ship_data(), context);
+    ships.push_back(player);
 }
 
 bool Level::process_additional_event(sf::Event &event) {
@@ -32,6 +35,7 @@ bool Level::process_additional_event(sf::Event &event) {
 bool Level::update_logic(float dt) {
     if(n_of_enemies == 0)
     {
+        context.soundEngine.play_sound("jump_sound");
         set_return(get_level_screen(context,data.next_level_no));
     }
     for(Ship* ship : ships)
@@ -63,6 +67,15 @@ bool Level::update_logic(float dt) {
                 projectile_it = projectiles.erase(projectile_it);
                 if((*ship_it)->is_destroyed())
                 {
+                    if(*ship_it == player)
+                    {
+                        on_defeat();
+                        return true;
+                    }
+                    else
+                    {
+                        n_of_enemies--;
+                    }
                     delete *ship_it;
                     removed = true;
                     break;
@@ -109,6 +122,7 @@ Screen *Level::get_level_screen(Context& context, unsigned int n) {
 
 void Level::add_projectile(Projectile * projectile) {
     projectiles.push_back(projectile);
+    context.soundEngine.play_sound(projectile->data.firing_sound_name);
 }
 
 Level::~Level() {

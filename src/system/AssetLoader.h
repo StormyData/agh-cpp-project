@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include "../game/GameData.h"
 #include <SFML/Audio.hpp>
+#include <functional>
 class AssetLoader
 {
 
@@ -15,9 +16,11 @@ class AssetLoader
     std::unordered_map<std::string, ProjectileData> projectile_types{};
     std::unordered_map<std::string, ShipType> ship_types{};
     std::unordered_map<std::string, EnemyShipData> enemy_ship_types{};
+    std::unordered_map<std::string, sf::SoundBuffer*> sounds;
     std::vector<LevelData> levels;
     std::unordered_map<std::string, displayText> strings;
     sf::Font font;
+    PlayerData playerData;
 
     void load_texture(tinyxml2::XMLElement *element, std::string where);
     void load_anim(tinyxml2::XMLElement *element, std::string where);
@@ -28,7 +31,22 @@ class AssetLoader
     void load_levels(tinyxml2::XMLElement* element, std::string where);
     void load_level(tinyxml2::XMLElement* element, std::string where);
     void load_enemy_ship_data(tinyxml2::XMLElement* element, std::string where);
+    void load_player_ship_data(tinyxml2::XMLElement* element, std::string where);
+    void load_sound(tinyxml2::XMLElement* element, std::string where);
     void load_file(const std::string& path);
+    std::unordered_map<std::string, std::function<void(tinyxml2::XMLElement*, std::string)>> parse_functions{
+            {"texture", std::bind(&AssetLoader::load_texture, this, std::placeholders::_1, std::placeholders::_2)},
+            {"animation", std::bind(&AssetLoader::load_anim, this ,std::placeholders::_1, std::placeholders::_2)},
+            {"projectile", std::bind(&AssetLoader::load_projectile, this ,std::placeholders::_1, std::placeholders::_2)},
+            {"colision", std::bind(&AssetLoader::load_colision, this ,std::placeholders::_1, std::placeholders::_2)},
+            {"ship_type", std::bind(&AssetLoader::load_ship_type, this ,std::placeholders::_1, std::placeholders::_2)},
+            {"text", std::bind(&AssetLoader::load_string, this ,std::placeholders::_1, std::placeholders::_2)},
+            {"levels", std::bind(&AssetLoader::load_levels, this ,std::placeholders::_1, std::placeholders::_2)},
+            {"enemy_ship_data", std::bind(&AssetLoader::load_enemy_ship_data, this ,std::placeholders::_1, std::placeholders::_2)},
+            {"player_ship_data", std::bind(&AssetLoader::load_player_ship_data, this ,std::placeholders::_1, std::placeholders::_2)},
+            {"sound", std::bind(&AssetLoader::load_sound, this ,std::placeholders::_1, std::placeholders::_2)},
+
+    };
 public:
     const sf::Texture& get_texture(const std::string& name) const
     {
@@ -58,6 +76,13 @@ public:
             throw std::invalid_argument("unknown string name: " + name);
         return strings.at(name);
     }
+    const sf::SoundBuffer* get_sound_buffer(const std::string& name) const
+    {
+        if(!sounds.contains(name))
+            throw std::invalid_argument("unknown sound name: " + name);
+        return sounds.at(name);
+    }
+
     AssetLoader()
     {
         if(!font.loadFromFile("/usr/share/fonts/liberation/LiberationMono-Regular.ttf"))
@@ -77,4 +102,6 @@ public:
     }
 
     const std::vector<LevelData> &get_levels();
+
+    const PlayerData &get_player_ship_data();
 };

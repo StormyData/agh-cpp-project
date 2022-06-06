@@ -21,6 +21,7 @@ struct ProjectileData
     const sf::Texture* texture = nullptr;
     ColisionData colision;
     sf::Vector2f speed;
+    std::string firing_sound_name;
 };
 
 struct ShipType

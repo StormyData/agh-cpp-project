@@ -26,7 +26,7 @@ private:
     std::list<Ship*> ships;
     std::list<Projectile*> projectiles;
     size_t n_of_enemies;
-
+    Ship* player;
     void on_defeat();
 };
 

@@ -21,7 +21,7 @@ Screen* Screen::run() {
                     on_window_exit_pressed();
                 redraw_required |= process_additional_event(event);
             }
-
+            context.soundEngine.update();
             redraw_required |= update_logic(elapsed);
 
             if(!redraw_required)
@@ -50,6 +50,8 @@ Screen* Screen::run() {
                 redraw_required |= process_additional_event(event);
             }
 
+
+            context.soundEngine.update();
             redraw_required |= update_logic(elapsed);
 
 

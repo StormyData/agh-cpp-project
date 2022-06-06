@@ -25,7 +25,7 @@ protected:
     Level* level_ptr;
     std::vector<std::pair<ProjectileData, sf::Vector2f>> fired_projectiles;
 public:
-    Ship(const ShipData* shipData, Context& context, Level*);
+    Ship(const ShipData* shipData, Side side, Context& context, Level*);
     bool get_hit_by(const Projectile& projectile);
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     virtual void update(float dt);
@@ -55,7 +55,7 @@ public:
 private:
     float reset_timer;
     float timer = 0;
-    float speed_change;
+    float speed_change = 180;
     void handle_keyboard(float  dt);
 };
 

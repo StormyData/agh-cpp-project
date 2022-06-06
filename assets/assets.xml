@@ -1,5 +1,14 @@
 <assets>
 
+    <sound name="enemy_projectile_0_sound" path="../assets/sound/laser3.wav"/>
+    <sound name="player_shoot_sound" path="../assets/sound/laser3.wav"/>
+    <sound name="enemy_projectile_1_sound" path="../assets/sound/laser5.wav"/>
+    <sound name="enemy_projectile_2_sound" path="../assets/sound/laser3.wav"/>
+    <sound name="enemy_projectile_3_sound" path="../assets/sound/space laser.wav"/>
+    <sound name="enemy_projectile_4_sound" path="../assets/sound/boss_laser.wav"/>
+    <sound name="jump_sound" path="../assets/sound/jump.wav"/>
+
+
     <texture name="background_level_1" path="../assets/img/bg_game1.png"/>
     <texture name="background_level_2" path="../assets/img/bg_game2.png"/>
     <texture name="background_level_3" path="../assets/img/bg_game3.png"/>
@@ -23,7 +32,7 @@
         <p pos="10,7"/>
     </colision>
     <projectile name="enemy_projectile_0" texture="enemy_projectile_0" colision="enemy_projectile_0" side="enemy"
-                speed="0,420"/>
+                speed="0,420" sound="enemy_projectile_0_sound"/>
     <texture name="enemy_projectile_1" path="../assets/img/enemy_proc2.png"/>
     <colision name="enemy_projectile_1">
         <p pos="4,8"/>
@@ -32,7 +41,7 @@
         <p pos="4,18"/>
     </colision>
     <projectile name="enemy_projectile_1" texture="enemy_projectile_1" colision="enemy_projectile_1" side="enemy"
-                speed="0,9"/>
+                speed="0,360" sound="enemy_projectile_1_sound"/>
     <texture name="enemy_projectile_2" path="../assets/img/enemy_proc3.png"/>
     <colision name="enemy_projectile_2">
         <p pos="27,26"/>
@@ -41,9 +50,9 @@
         <p pos="27,84"/>
     </colision>
     <projectile name="enemy_projectile_2_left" texture="enemy_projectile_2" colision="enemy_projectile_2" side="enemy"
-                speed="15,0"/>
+                speed="900,0" sound="enemy_projectile_2_sound"/>
     <projectile name="enemy_projectile_2_right" texture="enemy_projectile_2" colision="enemy_projectile_2" side="enemy"
-                speed="-15,0"/>
+                speed="-900,0" sound="enemy_projectile_2_sound"/>
     <texture name="enemy_projectile_3" path="../assets/img/enemy_proc4.png"/>
     <colision name="enemy_projectile_3">
         <p pos="21,69"/>
@@ -52,7 +61,7 @@
         <p pos="21,81"/>
     </colision>
     <projectile name="enemy_projectile_3" texture="enemy_projectile_3" colision="enemy_projectile_3" side="enemy"
-                speed="0,9"/>
+                speed="0,360" sound="enemy_projectile_3_sound"/>
 
 
     <texture name="enemy_0" path="../assets/img/enemy1.png"/>
@@ -124,7 +133,7 @@
         <p pos="10,7"/>
     </colision>
     <projectile name="player_projectile" texture="player_projectile" colision="player_projectile" side="player"
-                speed="0,-8"/>
+                speed="0,-480" sound="player_shoot_sound"/>
 
     <texture name="player" path="../assets/img/player_spritesheet.png"/>
     <animation name="player" texture_name="player" frame_height="52" frame_width="41" frames_in_row="5" nframes="5"/>
@@ -133,6 +142,10 @@
         <p pos="0,46"/>
         <p pos="40,46"/>
     </colision>
+    <ship_type name="player" animation="player" colision="player"/>
+    <player_ship_data ship_type="player" hp="5" reset_timer="0.5" starting_pos="400,500">
+        <fired_projectile projectile_type="player_projectile" pos="12,0"/>
+    </player_ship_data>
 
     <enemy_ship_data name="level_1_enemy" ship_type="enemy_0" ai_type="1" hp="2">
         <fired_projectile projectile_type="enemy_projectile_0" pos="12,0"/>
@@ -140,38 +153,141 @@
     <enemy_ship_data name="level_2_enemy" ship_type="enemy_1" ai_type="0" hp="3">
         <fired_projectile projectile_type="enemy_projectile_1" pos="12,0"/>
     </enemy_ship_data>
+    <enemy_ship_data name="level_3_enemy" ship_type="enemy_1" ai_type="2" hp="3">
+        <fired_projectile projectile_type="enemy_projectile_1" pos="12,0"/>
+    </enemy_ship_data>
+    <enemy_ship_data name="level_3_enemy_1" ship_type="enemy_0" ai_type="-1" hp="2">
+        <fired_projectile projectile_type="enemy_projectile_0" pos="12,0"/>
+    </enemy_ship_data>
+    <enemy_ship_data name="level_3_enemy_2" ship_type="enemy_0" ai_type="1" hp="2">
+        <fired_projectile projectile_type="enemy_projectile_0" pos="12,0"/>
+    </enemy_ship_data>
+    <enemy_ship_data name="level_4_enemy_1" ship_type="enemy_2" ai_type="6" hp="4">
+        <fired_projectile projectile_type="enemy_projectile_0" pos="12,0"/>
+    </enemy_ship_data>
+    <enemy_ship_data name="level_4_enemy_2" ship_type="enemy_1" ai_type="2" hp="3">
+        <fired_projectile projectile_type="enemy_projectile_1" pos="12,0"/>
+    </enemy_ship_data>
+    <enemy_ship_data name="level_5_enemy_1" ship_type="enemy_2" ai_type="5" hp="4">
+        <fired_projectile projectile_type="enemy_projectile_0" pos="12,0"/>
+    </enemy_ship_data>
+    <enemy_ship_data name="level_6_enemy_1" ship_type="enemy_2" ai_type="7" hp="4">
+        <fired_projectile projectile_type="enemy_projectile_0" pos="12,0"/>
+    </enemy_ship_data>
+    <enemy_ship_data name="level_7_enemy" ship_type="enemy_3" ai_type="4" hp="5">
+        <fired_projectile projectile_type="enemy_projectile_3" pos="-16.5,0"/>
+        <fired_projectile projectile_type="enemy_projectile_3" pos="13.5,0"/>
+    </enemy_ship_data>
+    <enemy_ship_data name="level_8_enemy" ship_type="enemy_4" ai_type="8" hp="5">
+        <fired_projectile projectile_type="enemy_projectile_3" pos="-16.5,0"/>
+        <fired_projectile projectile_type="enemy_projectile_3" pos="13.5,0"/>
+    </enemy_ship_data>
 
     <levels>
-        <level display_name="level 1" background="background_level_1">
-            <enemy name="level_1_enemy" start_pos="0.0,100.0"/>
-            <enemy name="level_1_enemy" start_pos="50.0,100.0"/>
-            <enemy name="level_1_enemy" start_pos="100.0,100.0"/>
-            <enemy name="level_1_enemy" start_pos="150.0,100.0"/>
-            <enemy name="level_1_enemy" start_pos="200.0,100.0"/>
-        </level>
-        <level display_name="level 2" background="background_level_2">
-            <enemy name="level_1_enemy" start_pos="0.0,150.0"/>
-            <enemy name="level_1_enemy" start_pos="100.0,150.0"/>
-            <enemy name="level_1_enemy" start_pos="200.0,150.0"/>
-            <enemy name="level_1_enemy" start_pos="300.0,150.0"/>
-            <enemy name="level_1_enemy" start_pos="400.0,150.0"/>
+            <level display_name="level 1" background="background_level_1">
+                <enemy name="level_1_enemy" start_pos="0.0,100.0"/>
+                <enemy name="level_1_enemy" start_pos="50.0,100.0"/>
+                <enemy name="level_1_enemy" start_pos="100.0,100.0"/>
+                <enemy name="level_1_enemy" start_pos="150.0,100.0"/>
+                <enemy name="level_1_enemy" start_pos="200.0,100.0"/>
+            </level>
+            <level display_name="level 2" background="background_level_2">
+                <enemy name="level_1_enemy" start_pos="0.0,150.0"/>
+                <enemy name="level_1_enemy" start_pos="100.0,150.0"/>
+                <enemy name="level_1_enemy" start_pos="200.0,150.0"/>
+                <enemy name="level_1_enemy" start_pos="300.0,150.0"/>
+                <enemy name="level_1_enemy" start_pos="400.0,150.0"/>
 
-            <enemy name="level_2_enemy" start_pos="200.0,70.0"/>
-            <enemy name="level_2_enemy" start_pos="565.0,70.0"/>
-        </level>
-    </levels>
-    <text name="credits" size="13">
-        Menu &amp; credits background by StumpyStrust opengameart.org
-        Ships and cursor design by Stephen Challener (Redshrike), hosted by OpenGameArt.org
-        Ship engines light and lasers by Rawdanitsu opengameart.org
-        Level backgrounds by Rawdanitsu opengameart.org
-        Explosions animations by Jetrel opengameart.org
-        Jump and portals animation by Soluna Software opengameart.org
-        Music by remaxim, yd, Joth, maxstack opengameart.org
-        Explosion sound effect by Lamoot from Blender Foundation opengameart.org
-        Laser sounds by dklon and bart opengameart.org
-        Jump sound by Ogrebane opengameart.org
-        Rest of graphics: Andrzej "Pojemnik" Gauza
-        Code: Tobiasz "StormyData" Szulc
-    </text>
-</assets>
+                <enemy name="level_2_enemy" start_pos="200.0,70.0"/>
+                <enemy name="level_2_enemy" start_pos="565.0,70.0"/>
+            </level>
+
+            <level display_name="level 3" background="background_level_3">
+                <enemy name="level_3_enemy" start_pos="272.5,70.0"/>
+                <enemy name="level_3_enemy" start_pos="357.5,70.0"/>
+                <enemy name="level_3_enemy" start_pos="442.5,70.0"/>
+
+                <enemy name="level_3_enemy_1" start_pos="100.0,150.0"/>
+                <enemy name="level_3_enemy_1" start_pos="200.0,150.0"/>
+
+                <enemy name="level_3_enemy_2" start_pos="565.0,150.0"/>
+                <enemy name="level_3_enemy_2" start_pos="665.0,150.0"/>
+            </level>
+
+            <level display_name="level 4" background="background_level_4">
+                <enemy name="level_4_enemy_1" start_pos="102.5,50"/>
+                <enemy name="level_4_enemy_1" start_pos="237.5,50"/>
+                <enemy name="level_4_enemy_1" start_pos="372.5,50"/>
+                <enemy name="level_4_enemy_1" start_pos="507.5,50"/>
+                <enemy name="level_4_enemy_1" start_pos="642.5,50"/>
+
+                <enemy name="level_4_enemy_2" start_pos="272.5,70.0"/>
+                <enemy name="level_4_enemy_2" start_pos="357.5,70.0"/>
+                <enemy name="level_4_enemy_2" start_pos="442.5,70.0"/>
+            </level>
+            <level display_name="level 5" background="background_level_5">
+                <enemy name="level_5_enemy_1" start_pos="102.5,50.0"/>
+                <enemy name="level_5_enemy_1" start_pos="237.5,50.0"/>
+                <enemy name="level_5_enemy_1" start_pos="372.5,50.0"/>
+                <enemy name="level_5_enemy_1" start_pos="507.5,50.0"/>
+                <enemy name="level_5_enemy_1" start_pos="642.5,50.0"/>
+
+                <enemy name="level_3_enemy_1" start_pos="100.0,150.0"/>
+                <enemy name="level_3_enemy_1" start_pos="200.0,150.0"/>
+
+                <enemy name="level_3_enemy_2" start_pos="565.0,150.0"/>
+                <enemy name="level_3_enemy_2" start_pos="665.0,150.0"/>
+            </level>
+
+            <level display_name="level 6" background="background_level_6">
+                <enemy name="level_6_enemy_1" start_pos="102.5,50.0"/>
+                <enemy name="level_6_enemy_1" start_pos="237.5,50.0"/>
+                <enemy name="level_6_enemy_1" start_pos="372.5,50.0"/>
+                <enemy name="level_6_enemy_1" start_pos="507.5,50.0"/>
+                <enemy name="level_6_enemy_1" start_pos="642.5,50.0"/>
+
+                <enemy name="level_1_enemy" start_pos="0.0,100.0"/>
+                <enemy name="level_1_enemy" start_pos="50.0,100.0"/>
+                <enemy name="level_1_enemy" start_pos="100.0,100.0"/>
+                <enemy name="level_1_enemy" start_pos="150.0,100.0"/>
+                <enemy name="level_1_enemy" start_pos="200.0,100.0"/>
+            </level>
+            <level display_name="level 7" background="background_level_7">
+                <enemy name="level_7_enemy" start_pos="200.0,50.0"/>
+                <enemy name="level_7_enemy" start_pos="541.0,50.0"/>
+            </level>
+            <level display_name="level 8" background="background_level_8">
+                <enemy name="level_8_enemy" start_pos="370.5, 50.0"/>
+            </level>
+            <level display_name="level 9" background="background_level_9">
+                <enemy name="level_3_enemy_1" start_pos="100.0,75.0"/>
+                <enemy name="level_3_enemy_1" start_pos="150.0,75.0"/>
+                <enemy name="level_3_enemy_1" start_pos="200.0,75.0"/>
+                <enemy name="level_3_enemy_1" start_pos="250.0,75.0"/>
+                <enemy name="level_3_enemy_1" start_pos="300.0,75.0"/>
+                <enemy name="level_3_enemy_1" start_pos="350.0,75.0"/>
+
+
+                <enemy name="level_3_enemy_2" start_pos="400.0,75.0"/>
+                <enemy name="level_3_enemy_2" start_pos="450.0,75.0"/>
+                <enemy name="level_3_enemy_2" start_pos="500.0,75.0"/>
+                <enemy name="level_3_enemy_2" start_pos="550.0,75.0"/>
+                <enemy name="level_3_enemy_2" start_pos="600.0,75.0"/>
+                <enemy name="level_3_enemy_2" start_pos="650.0,75.0"/>
+            </level>
+        </levels>
+        <text name="credits" size="13">
+            Menu &amp; credits background by StumpyStrust opengameart.org
+            Ships and cursor design by Stephen Challener (Redshrike), hosted by OpenGameArt.org
+            Ship engines light and lasers by Rawdanitsu opengameart.org
+            Level backgrounds by Rawdanitsu opengameart.org
+            Explosions animations by Jetrel opengameart.org
+            Jump and portals animation by Soluna Software opengameart.org
+            Music by remaxim, yd, Joth, maxstack opengameart.org
+            Explosion sound effect by Lamoot from Blender Foundation opengameart.org
+            Laser sounds by dklon and bart opengameart.org
+            Jump sound by Ogrebane opengameart.org
+            Rest of graphics: Andrzej "Pojemnik" Gauza
+            Code: Tobiasz "StormyData" Szulc
+        </text>
+    </assets>
