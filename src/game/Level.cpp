@@ -14,10 +14,12 @@ void Level::draw() {
     {
         context.window.draw(*p);
     }
+    context.window.draw(effectHolder);
 
 }
 
-Level::Level(const LevelData &data, Context &context) : Screen(context,false), data(data)
+Level::Level(const LevelData &data, Context &context) : Screen(context,false),
+effectHolder(context), data(data)
 {
     n_of_enemies = data.ships.size();
     background.setTexture(context.assetLoader.get_texture(data.background),true);
@@ -33,6 +35,8 @@ bool Level::process_additional_event(sf::Event &event) {
 }
 
 bool Level::update_logic(float dt) {
+    effectHolder.update(dt);
+
     if(n_of_enemies == 0)
     {
         context.soundEngine.play_sound("jump_sound");

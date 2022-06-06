@@ -15,7 +15,15 @@ bool Ship::get_hit_by(const Projectile &projectile) {
     health--;
     hpBar.set_hp(health);
     if(health<=0)
+    {
+        if(!is_dead)
+        {
+            level_ptr->add_effect("explosion_0", position + animation.getSize()/2.0f);
+            context.soundEngine.play_sound("big_explosion_sound");
+        }
+
         is_dead = true;
+    }
     return true;
 }
 

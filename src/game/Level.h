@@ -7,6 +7,7 @@
 #include "Projectile.h"
 #include "../system/context.h"
 #include "../gui/Screen.h"
+#include "visual_effect.h"
 #include <optional>
 class Ship;
 
@@ -19,8 +20,10 @@ public:
 
     static Screen *get_level_screen(Context& context, unsigned int n);
     void add_projectile(Projectile*);
+    void add_effect(const std::string& name, sf::Vector2f pos){effectHolder.create_effect(pos, name);};
     ~Level();
 private:
+    EffectHolder effectHolder;
     const LevelData data;
     sf::Sprite background;
     std::list<Ship*> ships;

@@ -7,7 +7,7 @@
     <sound name="enemy_projectile_3_sound" path="../assets/sound/space laser.wav"/>
     <sound name="enemy_projectile_4_sound" path="../assets/sound/boss_laser.wav"/>
     <sound name="jump_sound" path="../assets/sound/jump.wav"/>
-
+    <sound name="big_explosion_sound" path="../assets/sound/DeathFlash.flac"/>
 
     <texture name="background_level_1" path="../assets/img/bg_game1.png"/>
     <texture name="background_level_2" path="../assets/img/bg_game2.png"/>
