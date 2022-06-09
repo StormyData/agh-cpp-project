@@ -32,124 +32,132 @@
     <texture name="cursor" path="../assets/img/cursor.png"/>
 
     <texture name="enemy_projectile_0" path="../assets/img/enemy_proc.png"/>
-    <colision name="enemy_projectile_0">
+    <collision name="enemy_projectile_0">
         <p pos="6,7"/>
         <p pos="6,25"/>
         <p pos="10,25"/>
         <p pos="10,7"/>
-    </colision>
-    <projectile name="enemy_projectile_0" texture="enemy_projectile_0" colision="enemy_projectile_0" side="enemy"
+    </collision>
+    <projectile name="enemy_projectile_0" texture="enemy_projectile_0" collision="enemy_projectile_0" side="enemy"
                 speed="0,420" sound="enemy_projectile_0_sound"/>
     <texture name="enemy_projectile_1" path="../assets/img/enemy_proc2.png"/>
-    <colision name="enemy_projectile_1">
+    <collision name="enemy_projectile_1">
         <p pos="4,8"/>
         <p pos="9,8"/>
         <p pos="9,18"/>
         <p pos="4,18"/>
-    </colision>
-    <projectile name="enemy_projectile_1" texture="enemy_projectile_1" colision="enemy_projectile_1" side="enemy"
+    </collision>
+    <projectile name="enemy_projectile_1" texture="enemy_projectile_1" collision="enemy_projectile_1" side="enemy"
                 speed="0,360" sound="enemy_projectile_1_sound"/>
     <texture name="enemy_projectile_2" path="../assets/img/enemy_proc3.png"/>
-    <colision name="enemy_projectile_2">
+    <collision name="enemy_projectile_2">
         <p pos="27,26"/>
         <p pos="34,26"/>
         <p pos="34,84"/>
         <p pos="27,84"/>
-    </colision>
-    <projectile name="enemy_projectile_2_left" texture="enemy_projectile_2" colision="enemy_projectile_2" side="enemy"
+    </collision>
+    <projectile name="enemy_projectile_2_left" texture="enemy_projectile_2" collision="enemy_projectile_2" side="enemy"
                 speed="900,0" sound="enemy_projectile_2_sound"/>
-    <projectile name="enemy_projectile_2_right" texture="enemy_projectile_2" colision="enemy_projectile_2" side="enemy"
+    <projectile name="enemy_projectile_2_right" texture="enemy_projectile_2" collision="enemy_projectile_2" side="enemy"
                 speed="-900,0" sound="enemy_projectile_2_sound"/>
     <texture name="enemy_projectile_3" path="../assets/img/enemy_proc4.png"/>
-    <colision name="enemy_projectile_3">
+    <collision name="enemy_projectile_3">
         <p pos="21,69"/>
         <p pos="33,69"/>
         <p pos="33,81"/>
         <p pos="21,81"/>
-    </colision>
-    <projectile name="enemy_projectile_3" texture="enemy_projectile_3" colision="enemy_projectile_3" side="enemy"
+    </collision>
+    <projectile name="enemy_projectile_3" texture="enemy_projectile_3" collision="enemy_projectile_3" side="enemy"
                 speed="0,360" sound="enemy_projectile_3_sound"/>
 
 
     <texture name="enemy_0" path="../assets/img/enemy1.png"/>
-    <animation name="enemy_0" texture_name="enemy_0" frames_in_row="5" frame_width="35" frame_height="48" nframes="5"/>
-    <colision name="enemy_0">
+    <animation name="enemy_0" texture_name="enemy_0" frames_in_row="5" frame_width="35" frame_height="48"
+               number_of_frames="5"/>
+    <collision name="enemy_0">
         <p pos="0,14"/>
         <p pos="34,14"/>
         <p pos="17,47"/>
-    </colision>
-    <ship_type name="enemy_0" colision="enemy_0" animation="enemy_0" hp_bar_offset="0,-20"/>
+    </collision>
+    <ship_type name="enemy_0" collision="enemy_0" animation="enemy_0" hp_bar_offset="0,-20"/>
     <texture name="enemy_1" path="../assets/img/enemy2.png"/>
-    <animation name="enemy_1" texture_name="enemy_1" nframes="4" frames_in_row="4" frame_width="35" frame_height="50"/>
-    <colision name="enemy_1">
+    <animation name="enemy_1" texture_name="enemy_1" number_of_frames="4" frames_in_row="4" frame_width="35"
+               frame_height="50"/>
+    <collision name="enemy_1">
         <p pos="0,9"/>
         <p pos="34,9"/>
         <p pos="17,49"/>
-    </colision>
-    <ship_type name="enemy_1" colision="enemy_1" animation="enemy_1" hp_bar_offset="0,-20"/>
+    </collision>
+    <ship_type name="enemy_1" collision="enemy_1" animation="enemy_1" hp_bar_offset="0,-20"/>
     <texture name="enemy_2" path="../assets/img/enemy3.png"/>
-    <animation name="enemy_2" texture_name="enemy_2" nframes="5" frames_in_row="5" frame_width="35" frame_height="45"/>
-    <colision name="enemy_2">
+    <animation name="enemy_2" texture_name="enemy_2" number_of_frames="5" frames_in_row="5" frame_width="35"
+               frame_height="45"/>
+    <collision name="enemy_2">
         <p pos="0,15"/>
         <p pos="34,15"/>
         <p pos="17,44"/>
-    </colision>
-    <ship_type name="enemy_2" colision="enemy_2" animation="enemy_2" hp_bar_offset="0,-20"/>
+    </collision>
+    <ship_type name="enemy_2" collision="enemy_2" animation="enemy_2" hp_bar_offset="0,-20"/>
     <texture name="enemy_3" path="../assets/img/enemy4.png"/>
-    <animation name="enemy_3" texture_name="enemy_3" nframes="5" frames_in_row="5" frame_width="59" frame_height="54"/>
-    <colision name="enemy_3">
+    <animation name="enemy_3" texture_name="enemy_3" number_of_frames="5" frames_in_row="5" frame_width="59"
+               frame_height="54"/>
+    <collision name="enemy_3">
         <p pos="0,12"/>
         <p pos="58,12"/>
         <p pos="34,53"/>
         <p pos="24,53"/>
-    </colision>
-    <ship_type name="enemy_3" colision="enemy_3" animation="enemy_3" hp_bar_offset="0,-20"/>
+    </collision>
+    <ship_type name="enemy_3" collision="enemy_3" animation="enemy_3" hp_bar_offset="0,-20"/>
     <texture name="enemy_4" path="../assets/img/enemy5.png"/>
-    <animation name="enemy_4" texture_name="enemy_4" nframes="5" frames_in_row="5" frame_width="65" frame_height="75"/>
-    <colision name="enemy_4">
+    <animation name="enemy_4" texture_name="enemy_4" number_of_frames="5" frames_in_row="5" frame_width="65"
+               frame_height="75"/>
+    <collision name="enemy_4">
         <p pos="0,4"/>
         <p pos="63,5"/>
         <p pos="32,74"/>
-    </colision>
-    <ship_type name="enemy_4" colision="enemy_4" animation="enemy_4" hp_bar_offset="0,-20"/>
+    </collision>
+    <ship_type name="enemy_4" collision="enemy_4" animation="enemy_4" hp_bar_offset="0,-20"/>
     <texture name="boss" path="../assets/img/enemy6.png"/>
-    <animation name="boss" texture_name="boss" nframes="5" frames_in_row="5" frame_width="95" frame_height="76"/>
-    <colision name="boss">
+    <animation name="boss" texture_name="boss" number_of_frames="5" frames_in_row="5" frame_width="95"
+               frame_height="76"/>
+    <collision name="boss">
         <p pos="10,0"/>
         <p pos="84,0"/>
         <p pos="94,25"/>
         <p pos="68,75"/>
         <p pos="26,75"/>
         <p pos="0,25"/>
-    </colision>
-    <ship_type name="boss" colision="boss" animation="boss"  hp_bar_offset="0,50"/>
+    </collision>
+    <ship_type name="boss" collision="boss" animation="boss" hp_bar_offset="0,50"/>
 
 
     <texture name="explosion_0" path="../assets/img/explosion1.png"/>
-    <animation name="explosion_0" texture_name="explosion_0" frame_width="89" frame_height="89" nframes="10"
+    <animation name="explosion_0" texture_name="explosion_0" frame_width="89" frame_height="89" number_of_frames="10"
                frames_in_row="10"/>
 
     <texture name="jump" path="../assets/img/jump_animation.png"/>
-    <animation name="jump" texture_name="jump" frame_height="128" frame_width="128" nframes="16" frames_in_row="4"/>
+    <animation name="jump" texture_name="jump" frame_height="128" frame_width="128" number_of_frames="16"
+               frames_in_row="4"/>
 
     <texture name="player_projectile" path="../assets/img/player_proc.png"/>
-    <colision name="player_projectile">
+    <collision name="player_projectile">
         <p pos="6,7"/>
         <p pos="6,25"/>
         <p pos="10,25"/>
         <p pos="10,7"/>
-    </colision>
-    <projectile name="player_projectile" texture="player_projectile" colision="player_projectile" side="player"
+    </collision>
+    <projectile name="player_projectile" texture="player_projectile" collision="player_projectile" side="player"
                 speed="0,-480" sound="player_shoot_sound"/>
 
     <texture name="player" path="../assets/img/player_spritesheet.png"/>
-    <animation name="player" texture_name="player" frame_height="52" frame_width="41" frames_in_row="5" nframes="5"/>
-    <colision name="player">
+    <animation name="player" texture_name="player" frame_height="52" frame_width="41" frames_in_row="5"
+               number_of_frames="5"/>
+    <collision name="player">
         <p pos="20,0"/>
         <p pos="0,46"/>
         <p pos="40,46"/>
-    </colision>
-    <ship_type name="player" animation="player" colision="player" hp_bar_offset="0,40"/>
+    </collision>
+    <ship_type name="player" animation="player" collision="player" hp_bar_offset="0,40"/>
     <player_ship_data ship_type="player" hp="5" reset_timer="0.5" starting_pos="400,500">
         <fired_projectile projectile_type="player_projectile" pos="12,0"/>
     </player_ship_data>
@@ -157,7 +165,7 @@
     <enemy_ship_data name="level_1_enemy" ship_type="enemy_0" ai_type="1" hp="2">
         <fired_projectile projectile_type="enemy_projectile_0" pos="12,0"/>
     </enemy_ship_data>
-    <enemy_ship_data name="level_2_enemy" ship_type="enemy_1" ai_type="0" hp="3">
+    <enemy_ship_data name="level_2_enemy" ship_type="enemy_1" ai_type="2" hp="3">
         <fired_projectile projectile_type="enemy_projectile_1" pos="12,0"/>
     </enemy_ship_data>
     <enemy_ship_data name="level_3_enemy" ship_type="enemy_1" ai_type="2" hp="3">

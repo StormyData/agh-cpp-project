@@ -1,4 +1,4 @@
-#include "AssetLoader.h"
+#include "asset_loader.h"
 #include <fstream>
 #include <tinyxml2.h>
 
@@ -23,17 +23,17 @@ sf::Vector2f parse_point(const std::string &s, const std::string &where = "") {
     if (off == std::string::npos) {
         throw std::invalid_argument("invalid point literal" + s + " in " + where);
     }
-    char* end;
+    char *end;
 
     std::string tmp = s.substr(0, off);
     float x = std::strtof(tmp.c_str(), &end);
-    if(end == tmp.c_str())
+    if (end == tmp.c_str())
         throw std::invalid_argument("invalid point literal" + s + " (cannot parse " + tmp + ") in " + where);
 
     tmp = s.substr(off + 1, s.size() - off - 1);
     float y = std::strtof(tmp.c_str(), &end);
-    if(end == tmp.c_str())
-        throw std::invalid_argument("invalid point literal" + s + + " (cannot parse " + tmp + ") in " + where);
+    if (end == tmp.c_str())
+        throw std::invalid_argument("invalid point literal" + s + +" (cannot parse " + tmp + ") in " + where);
 
     return {x, y};
 }
@@ -61,8 +61,8 @@ void AssetLoader::load_anim(tinyxml2::XMLElement *element, std::string where) {
     data.frames_in_row = get_attribute_or_throw(element, "frames_in_row", where)->IntValue();
     data.frame_size.x = get_attribute_or_throw(element, "frame_width", where)->IntValue();
     data.frame_size.y = get_attribute_or_throw(element, "frame_height", where)->IntValue();
-    int nframes = get_attribute_or_throw(element, "nframes", where)->IntValue();
-    data.times = std::vector<float>(nframes, 1.0 / 30);
+    int number_of_frames = get_attribute_or_throw(element, "number_of_frames", where)->IntValue();
+    data.times = std::vector<float>(number_of_frames, 1.0 / 30);
     animations[anim_name] = data;
 }
 
@@ -75,7 +75,7 @@ void AssetLoader::load_file(const std::string &path) {
     tinyxml2::XMLElement *element = root->FirstChildElement();
     while (element != nullptr) {
         std::string name = element->Name();
-        if(parse_functions.contains(name))
+        if (parse_functions.contains(name))
             parse_functions[name](element, "assets");
         element = element->NextSiblingElement();
     }
@@ -87,13 +87,13 @@ void AssetLoader::load_projectile(tinyxml2::XMLElement *element, std::string whe
     std::string name = get_attribute_or_throw(element, "name", where)->Value();
     where += "(" + name + ")";
     std::string texture_name = get_attribute_or_throw(element, "texture", where)->Value();
-    std::string colision_name = get_attribute_or_throw(element, "colision", where)->Value();
+    std::string collision_name = get_attribute_or_throw(element, "collision", where)->Value();
     Side side = parse_side(get_attribute_or_throw(element, "side", where)->Value(), where + "{side}");
     sf::Vector2f speed = parse_point(get_attribute_or_throw(element, "speed", where)->Value(), where + "{speed}");
-    std::string firing_sound_name = get_attribute_or_throw(element,"sound", where)->Value();
+    std::string firing_sound_name = get_attribute_or_throw(element, "sound", where)->Value();
     projectile_types[name] = ProjectileData();
     projectile_types[name].side = side;
-    projectile_types[name].colision = get_colision(colision_name);
+    projectile_types[name].collision = get_collision(collision_name);
     projectile_types[name].texture = &get_texture(texture_name);
     projectile_types[name].speed = speed;
     projectile_types[name].firing_sound_name = firing_sound_name;
@@ -104,26 +104,27 @@ void AssetLoader::load_ship_type(tinyxml2::XMLElement *element, std::string wher
     std::string name = get_attribute_or_throw(element, "name", where)->Value();
     where += "(" + name + ")";
     std::string animation_name = get_attribute_or_throw(element, "animation", where)->Value();
-    std::string colision_name = get_attribute_or_throw(element, "colision", where)->Value();
-    sf::Vector2f hp_bar_offset = parse_point(get_attribute_or_throw(element, "hp_bar_offset", where)->Value(), where + "{hp_bar_offset}");
+    std::string collision_name = get_attribute_or_throw(element, "collision", where)->Value();
+    sf::Vector2f hp_bar_offset = parse_point(get_attribute_or_throw(element, "hp_bar_offset", where)->Value(),
+                                             where + "{hp_bar_offset}");
     ship_types[name] = ShipType();
-    ship_types[name].colision = get_colision(colision_name);
+    ship_types[name].collision = get_collision(collision_name);
     ship_types[name].animation = get_animation(animation_name);
     ship_types[name].hp_bar_offset = hp_bar_offset;
 }
 
-void AssetLoader::load_colision(tinyxml2::XMLElement *element, std::string where) {
-    where += "::colision";
+void AssetLoader::load_collision(tinyxml2::XMLElement *element, std::string where) {
+    where += "::collision";
     std::string name = get_attribute_or_throw(element, "name", where)->Value();
     where += "(" + name + ")";
-    colisions[name] = ColisionData();
+    collisions[name] = CollisionData();
     tinyxml2::XMLElement *child = element->FirstChildElement();
     int i = 0;
     while (child != nullptr) {
         if (child->Name() == std::string("p")) {
             std::string p_where = where + ":[" + std::to_string(i) + "]:p";
             std::string p_str = get_attribute_or_throw(child, "pos", p_where)->Value();
-            colisions[name].points.push_back(parse_point(p_str, p_where));
+            collisions[name].points.push_back(parse_point(p_str, p_where));
         }
         i++;
         child = child->NextSiblingElement();
@@ -157,10 +158,9 @@ void AssetLoader::load_level(tinyxml2::XMLElement *element, std::string where) {
     where += "(" + data.display_name + ")";
     data.background = get_attribute_or_throw(element, "background", where)->Value();
     tinyxml2::XMLElement *child = element->FirstChildElement();
-    int i=0;
+    int i = 0;
     while (child != nullptr) {
-        if (child->Name() == std::string("enemy"))
-        {
+        if (child->Name() == std::string("enemy")) {
             std::string e_where = where + "[" + std::to_string(i) + "]";
             std::string name = get_attribute_or_throw(child, "name", e_where)->Value();
             EnemyShipData enemy_data = enemy_ship_types[name];
@@ -210,7 +210,7 @@ void AssetLoader::load_enemy_ship_data(tinyxml2::XMLElement *element, std::strin
         i++;
     }
     data.ai_type = ai_type;
-    data.start_pos = {0,0};
+    data.start_pos = {0, 0};
     data.type = ship_types[ship_type];
     data.hp = hp;
     enemy_ship_types[name] = data;
@@ -225,7 +225,8 @@ void AssetLoader::load_player_ship_data(tinyxml2::XMLElement *element, std::stri
     std::string ship_type = get_attribute_or_throw(element, "ship_type", where)->Value();
     float reset_timer = get_attribute_or_throw(element, "reset_timer", where)->FloatValue();
     int hp = get_attribute_or_throw(element, "hp", where)->IntValue();
-    sf::Vector2f start_pos = parse_point(get_attribute_or_throw(element, "starting_pos", where)->Value(), where+"{starting_pos}");
+    sf::Vector2f start_pos = parse_point(get_attribute_or_throw(element, "starting_pos", where)->Value(),
+                                         where + "{starting_pos}");
     tinyxml2::XMLElement *child = element->FirstChildElement();
     playerData = PlayerData();
     int i = 0;
@@ -251,7 +252,7 @@ void AssetLoader::load_sound(tinyxml2::XMLElement *element, std::string where) {
     where += "(" + name + ")";
     std::string path = get_attribute_or_throw(element, "path", where)->Value();
     float volume = get_attribute_or_throw(element, "volume", where)->FloatValue();
-    if(!sounds.contains(name))
+    if (!sounds.contains(name))
         sounds[name].buffer = new sf::SoundBuffer;
     sounds[name].buffer->loadFromFile(path);
     sounds[name].volume = volume;
@@ -275,8 +276,7 @@ void AssetLoader::load_misc_config(tinyxml2::XMLElement *element, std::string wh
 
 }
 
-void AssetLoader::load_music(tinyxml2::XMLElement* element, std::string where)
-{
+void AssetLoader::load_music(tinyxml2::XMLElement *element, std::string where) {
     where += "::music";
     std::string name = get_attribute_or_throw(element, "name", where)->Value();
     where += "(" + name + ")";

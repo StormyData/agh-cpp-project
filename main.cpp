@@ -1,6 +1,6 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
-#include "src/gui/MainMenuScreen.h"
+#include "src/gui/main_menu_screen.h"
 #include "src/system/context.h"
 
 int main()

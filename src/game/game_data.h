@@ -1,61 +1,51 @@
-//
-// Created by tobiasz on 17.05.2022.
-//
-
 #pragma once
 
 #include <vector>
 #include <string>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Audio.hpp>
-#include "../gui/Animation.h"
-enum Side{PLAYER, ENEMY};
+#include "../gui/animation.h"
+
+enum Side {
+    PLAYER, ENEMY
+};
 
 
-struct ColisionData
-{
+struct CollisionData {
     std::vector<sf::Vector2f> points;
 };
-struct ProjectileData
-{
+struct ProjectileData {
     Side side = ENEMY;
-    const sf::Texture* texture = nullptr;
-    ColisionData colision;
+    const sf::Texture *texture = nullptr;
+    CollisionData collision;
     sf::Vector2f speed;
     std::string firing_sound_name;
 };
 
-struct ShipType
-{
-    ColisionData colision;
+struct ShipType {
+    CollisionData collision;
     AnimationData animation;
     sf::Vector2f hp_bar_offset;
 };
 
-struct displayText
-{
+struct displayText {
     std::string text;
     unsigned int size;
     unsigned int style;
-    sf::Color fill = sf::Color::White;
-    sf::Color outline = sf::Color::Transparent;
-    float thickness = 0;
 };
 
 struct ShipData {
     ShipType type;
     int hp;
     std::vector<std::pair<ProjectileData, sf::Vector2f>> fired_projectiles;
-    sf::Vector2f  start_pos;
+    sf::Vector2f start_pos;
 };
-struct EnemyShipData : public ShipData
-{
-    int ai_type;
+struct EnemyShipData : public ShipData {
+    int ai_type = 0;
 };
 
-struct PlayerData : public ShipData
-{
-    float resetTimer;
+struct PlayerData : public ShipData {
+    float resetTimer = 0;
 };
 
 struct LevelData {
@@ -65,11 +55,10 @@ struct LevelData {
     unsigned int next_level_no;
 };
 
-struct SoundProperties{
-    sf::SoundBuffer* buffer;
+struct SoundProperties {
+    sf::SoundBuffer *buffer;
     float volume;
 };
-struct MusicProperties
-{
+struct MusicProperties {
     std::vector<std::pair<std::string, float>> files_with_volumes;
 };
